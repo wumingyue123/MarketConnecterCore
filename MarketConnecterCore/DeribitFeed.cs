@@ -32,7 +32,6 @@ namespace MarketConnectorCore
 
             bool mqttconnected = mqttClient.ConnectAsync(this.mqttClientOptions).IsCompleted;
 
-
             using (var socket = new WebSocket(domain))
             {
                 socket.OnMessage += (sender, e) =>
@@ -44,8 +43,9 @@ namespace MarketConnectorCore
 
                     try
                     {
-                        string method = (string)result["method"];
-                        if (method == "heartbeat")
+                        object method;
+                        result.TryGetValue("method", out method);
+                        if ((string)method == "heartbeat")
                         {
                             JObject @params = (JObject)result["params"];
                             if ((string)@params["type"] == "test_request")
@@ -54,7 +54,7 @@ namespace MarketConnectorCore
                                 Console.WriteLine("heartbeat");
                             }
                         }
-                        else if (method == "subscription")// publish message
+                        else if ((string)method == "subscription")// publish message
                         {
                             publishMessage(message: rawdata, topic: "marketdata/deribitdata").ConfigureAwait(false);
 
@@ -69,18 +69,20 @@ namespace MarketConnectorCore
                 socket.OnClose += (sender, e) =>
                 {
                     Console.WriteLine(e.Reason);
-                    Start();
+                    socket.Connect();
                 };
 
-                socket.OnOpen += (sender, e) => Console.WriteLine("Connection open: {0}", domain);
+                socket.OnOpen += (sender, e) =>
+                {
+                    Console.WriteLine("Connection open: {0}", domain);
+                    List<string> channels = (from symbol in symbolList select $"quote.{symbol}").ToList();
+                    channels.Add("BTC-PERPETUAL");
+                    channels.Add("ETH-PERPETUAL");
+                    Subscribe(socket, channels);
+                    SetHeartbeat(socket);
+                };
+
                 socket.Connect();
-
-                List<string> channels = (from symbol in symbolList select $"quote.{symbol}").ToList();
-                channels.Add("BTC-PERPETUAL");
-                channels.Add("ETH-PERPETUAL");
-
-                Subscribe(socket, channels);
-                SetHeartbeat(socket);
 
                 Console.ReadLine();
             }

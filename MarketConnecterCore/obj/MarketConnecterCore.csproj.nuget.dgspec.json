@@ -65,6 +65,10 @@
               "target": "Package",
               "version": "[106.6.9, )"
             },
+            "WebSocket4Net": {
+              "target": "Package",
+              "version": "[0.15.2, )"
+            },
             "WebSocketSharp-NonPreRelease": {
               "target": "Package",
               "version": "[1.0.0, )"

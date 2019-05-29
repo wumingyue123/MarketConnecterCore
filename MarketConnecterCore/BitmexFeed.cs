@@ -6,11 +6,9 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
-using WebSocketSharp;
-using Newtonsoft.Json.Linq;
+using WebSocket4Net;
 using MQTTnet;
 using MQTTnet.Client;
-using System.Runtime.InteropServices;
 using MQTTnet.Client.Options;
 using System.IO;
 using System.Net.Sockets;
@@ -36,22 +34,32 @@ namespace MarketConnectorCore
 
             using (var socket = new WebSocket(domain))
             {
-                socket.OnMessage += (sender, e) =>
+                socket.MessageReceived += (sender, e) =>
                 {
-                    var rawdata = e.RawData;
-                    var data = e.Data;
-                    publishMessage(message: rawdata, topic: "marketdata/bitmexdata").ConfigureAwait(false);
+                    var data = e.Message;
+                    publishMessage(message: data, topic: "marketdata/bitmexdata").ConfigureAwait(false);
                 };
-                socket.OnError += (sender, e) => Console.WriteLine(e.Message);
-                socket.OnClose += (sender, e) => Console.WriteLine(e.Reason);
-                socket.OnOpen += (sender, e) => Console.WriteLine("Connection open: {0}", domain);
-                socket.Connect();
-                Authenticate(socket);
-                Subscribe(socket, "trade:XBTUSD");
-                Subscribe(socket, "trade:ETHUSD");
-                Subscribe(socket, "trade:XBT:quarterly");
-                Subscribe(socket, "trade:XBT:biquarterly");
-                Subscribe(socket, "trade:ETH:quarterly");
+                socket.Error += (sender, e) => Console.WriteLine(e.Exception);
+                socket.Closed+= (sender, e) =>
+                {
+                    Console.WriteLine(e.ToString());
+                    Console.WriteLine($"socket closed at {domain}");
+                    socket.Open();
+                };
+
+                socket.Opened += (sender, e) =>
+                {
+                    Console.WriteLine("Connection open: {0}", domain);
+                    Authenticate(socket);
+                    Subscribe(socket, "trade:XBTUSD");
+                    Subscribe(socket, "trade:ETHUSD");
+                    Subscribe(socket, "trade:XBT:monthly");
+                    Subscribe(socket, "trade:XBT:biquarterly");
+                    Subscribe(socket, "trade:ETH:quarterly");
+                };
+
+                socket.Open();
+                
                 Console.ReadLine();
             }
             Console.WriteLine("Exiting of program");

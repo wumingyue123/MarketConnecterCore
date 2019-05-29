@@ -9,6 +9,7 @@
     <PackageReference Include="MQTTnet" Version="3.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="RestSharp" Version="106.6.9" />
+    <PackageReference Include="WebSocket4Net" Version="0.15.2" />
     <PackageReference Include="WebSocketSharp-NonPreRelease" Version="1.0.0" />
   </ItemGroup>
 

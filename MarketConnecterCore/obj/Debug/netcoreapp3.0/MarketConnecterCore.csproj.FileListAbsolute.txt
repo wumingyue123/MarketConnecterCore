@@ -6,7 +6,6 @@ C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netc
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\Newtonsoft.Json.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csproj.CopyComplete
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\MQTTnet.dll
-C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\websocket-sharp.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\MarketConnecterCore.deps.json
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\MarketConnecterCore.runtimeconfig.json
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\MarketConnecterCore.runtimeconfig.dev.json
@@ -15,3 +14,6 @@ C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netc
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\RestSharp.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.pdb
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\websocket-sharp.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\SuperSocket.ClientEngine.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\WebSocket4Net.dll
