@@ -1,0 +1,16 @@
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\MarketConnecterCore
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.deps.json
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.runtimeconfig.json
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.runtimeconfig.dev.json
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.pdb
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\MQTTnet.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\Newtonsoft.Json.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\RestSharp.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\websocket-sharp.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.csproj.CoreCompileInputs.cache
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.AssemblyInfoInputs.cache
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.AssemblyInfo.cs
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.csproj.CopyComplete
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.pdb
