@@ -28,8 +28,13 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
-            List<string> symbolList = GetSymbols();
+            List<string> symbolList = new List<string>();
 
+            foreach (string _currency in settings.currencyList)
+            {
+                symbolList.AddRange(GetSymbols(_currency));
+            }
+            
             bool mqttconnected = mqttClient.ConnectAsync(this.mqttClientOptions).IsCompleted;
 
             using (var socket = new WebSocket(domain))
@@ -144,13 +149,13 @@ namespace MarketConnectorCore
             socket.Send(sendJson);
         }
 
-        public List<string> GetSymbols()
+        public List<string> GetSymbols(string currency)
         {
             List<string> symbolList = new List<string> { };
 
             var request = new RestRequest("public/get_instruments");
 
-            request.AddParameter("currency", "BTC");
+            request.AddParameter("currency", currency);
             request.AddParameter("expired", "false");
             request.AddParameter("kind", "option");
 
