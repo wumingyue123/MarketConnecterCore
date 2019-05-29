@@ -51,11 +51,11 @@ namespace MarketConnectorCore
                 {
                     Console.WriteLine("Connection open: {0}", domain);
                     Authenticate(socket);
-                    Subscribe(socket, "trade:XBTUSD");
-                    Subscribe(socket, "trade:ETHUSD");
-                    Subscribe(socket, "trade:XBT:monthly");
-                    Subscribe(socket, "trade:XBT:biquarterly");
-                    Subscribe(socket, "trade:ETH:quarterly");
+                    foreach (string _symbol in settings.bitmexCurrencyList)
+                    {
+                        Subscribe(socket, $"trade:{_symbol}");
+                    }
+                    
                 };
 
                 socket.Open();

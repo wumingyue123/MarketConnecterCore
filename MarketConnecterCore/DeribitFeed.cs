@@ -30,7 +30,7 @@ namespace MarketConnectorCore
         {
             List<string> symbolList = new List<string>();
 
-            foreach (string _currency in settings.currencyList)
+            foreach (string _currency in settings.deribitCurrencyList)
             {
                 symbolList.AddRange(GetSymbols(_currency));
             }
