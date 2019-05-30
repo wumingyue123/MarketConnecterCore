@@ -13,6 +13,7 @@ using MQTTnet.Client.Options;
 using System.IO;
 using System.Net.Sockets;
 using MarketConnecterCore;
+using MQTTnet.Client.Disconnecting;
 
 namespace MarketConnectorCore
 {
@@ -29,7 +30,7 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
-
+            mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
             await mqttClient.ConnectAsync(this.mqttClientOptions);
 
             using (var socket = new WebSocket(domain))
@@ -144,6 +145,14 @@ namespace MarketConnectorCore
                         .WithAtLeastOnceQoS()
                         .WithRetainFlag(true)
                         .Build());
+        }
+
+        public async Task mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
+        {
+            Console.WriteLine($"####### Disconnected from MQTT server with reason {e.Exception} #########");
+            Thread.Sleep((int)1e4);
+            Console.WriteLine("Retrying connection...");
+            await this.mqttClient.ConnectAsync(this.mqttClientOptions);
         }
     }
 }

@@ -13,6 +13,7 @@ using RestSharp;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using MarketConnecterCore;
+using MQTTnet.Client.Disconnecting;
 
 namespace MarketConnectorCore
 {
@@ -28,13 +29,15 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
+
             List<string> symbolList = new List<string>();
 
             foreach (string _currency in settings.deribitCurrencyList)
             {
                 symbolList.AddRange(GetSymbols(_currency));
             }
-            
+
+            mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect to mqtt server on disconnect
             bool mqttconnected = mqttClient.ConnectAsync(this.mqttClientOptions).IsCompleted;
 
             using (var socket = new WebSocket(domain))
@@ -203,6 +206,13 @@ namespace MarketConnectorCore
                         .WithAtLeastOnceQoS()
                         .WithRetainFlag(true)
                         .Build());
+        }
+        public async Task mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
+        {
+            Console.WriteLine($"####### Disconnected from MQTT server with reason {e.Exception} #########");
+            Thread.Sleep((int)1e4);
+            Console.WriteLine("Retrying connection...");
+            await this.mqttClient.ConnectAsync(this.mqttClientOptions);
         }
     }
 }
