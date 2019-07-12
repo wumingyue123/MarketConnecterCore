@@ -16,6 +16,8 @@ using MQTTnet.Client.Disconnecting;
 using RestSharp;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
+using System.Collections.Concurrent;
+using System.Data.Common;
 
 namespace MarketConnectorCore
 {
@@ -30,6 +32,7 @@ namespace MarketConnectorCore
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
                                                           .Build();
         IRestClient restClient = new RestClient("https://www.bitmex.com/api/v1/");
+        public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
 
         public async Task Start()
         {
@@ -42,8 +45,9 @@ namespace MarketConnectorCore
             {
                 socket.MessageReceived += (sender, e) =>
                 {
-                    var data = e.Message;
-                    publishMessage(message: data, topic: "marketdata/bitmexdata").ConfigureAwait(false);
+                    string data = e.Message;
+                    BitmexFeedQueue.Enqueue(new FeedMessage(topic: "marketdata/bitmexdata", message: data));
+                    publishMessage(message: data, topic: "marketdata/bitmexdata");
                 };
                 socket.Error += (sender, e) => Console.WriteLine(e.Exception);
                 socket.Closed+= (sender, e) =>
