@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -14,6 +13,9 @@ using System.IO;
 using System.Net.Sockets;
 using MarketConnecterCore;
 using MQTTnet.Client.Disconnecting;
+using RestSharp;
+using System.Runtime.CompilerServices;
+using Newtonsoft.Json.Linq;
 
 namespace MarketConnectorCore
 {
@@ -27,11 +29,14 @@ namespace MarketConnectorCore
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
                                                           .Build();
+        IRestClient restClient = new RestClient("https://www.bitmex.com/api/v1/");
 
         public async Task Start()
         {
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
             await mqttClient.ConnectAsync(this.mqttClientOptions);
+
+            settings.bitmexCurrencyList = GetBitmexSymbols();
 
             using (var socket = new WebSocket(domain))
             {
@@ -54,6 +59,7 @@ namespace MarketConnectorCore
                     Authenticate(socket);
                     foreach (string _symbol in settings.bitmexCurrencyList)
                     {
+                        Console.WriteLine($"BITMEX: loaded contract------{_symbol}");
                         Subscribe(socket, $"trade:{_symbol}");
                     }
                     
@@ -153,6 +159,20 @@ namespace MarketConnectorCore
             Thread.Sleep((int)1e4);
             Console.WriteLine("Retrying connection...");
             await this.mqttClient.ConnectAsync(this.mqttClientOptions);
+        }
+
+        public List<string> GetBitmexSymbols()
+        {
+            List<string> symbolList = new List<string> { };
+            var request = new RestRequest("instrument/active");
+            var response = this.restClient.Get(request);
+
+            List<JObject> symbolData = JsonConvert.DeserializeObject<List<JObject>>(response.Content);
+            foreach (JObject _symbolData in symbolData)
+            {
+                symbolList.Add((string)_symbolData["symbol"]);
+            }
+            return symbolList;
         }
     }
 }

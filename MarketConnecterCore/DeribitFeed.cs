@@ -34,7 +34,7 @@ namespace MarketConnectorCore
 
             foreach (string _currency in settings.deribitCurrencyList)
             {
-                symbolList.AddRange(GetSymbols(_currency));
+                symbolList.AddRange(GetDeribitSymbols(_currency));
             }
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect to mqtt server on disconnect
@@ -152,7 +152,7 @@ namespace MarketConnectorCore
             socket.Send(sendJson);
         }
 
-        public List<string> GetSymbols(string currency)
+        public List<string> GetDeribitSymbols(string currency)
         {
             List<string> symbolList = new List<string> { };
 
@@ -168,7 +168,7 @@ namespace MarketConnectorCore
 
             foreach (SymbolResult result in jsonResponse.SymbolResult)
             {
-                Console.WriteLine($"contract: {result.instrument_name}  strike: {result.strike}  type: {result.option_type}");
+                Console.WriteLine($"DERIBIT: loaded contract------{result.instrument_name}       strike: {result.strike}      type: {result.option_type}");
                 symbolList.Add(result.instrument_name);
             }
 
