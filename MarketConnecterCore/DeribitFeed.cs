@@ -14,6 +14,7 @@ using System.Linq;
 using Newtonsoft.Json.Linq;
 using MarketConnecterCore;
 using MQTTnet.Client.Disconnecting;
+using System.Collections.Concurrent;
 
 namespace MarketConnectorCore
 {
@@ -26,9 +27,12 @@ namespace MarketConnectorCore
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
                                                           .Build();
         IRestClient restClient = new RestClient("https://www.deribit.com/api/v2/");
+        public static ConcurrentQueue<FeedMessage> DeribitFeedQueue = new ConcurrentQueue<FeedMessage>();
+
 
         public async Task Start()
         {
+            ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
 
             List<string> symbolList = new List<string>();
 
@@ -42,53 +46,10 @@ namespace MarketConnectorCore
 
             using (var socket = new WebSocket(domain))
             {
-                socket.OnMessage += (sender, e) =>
-                {
-                    var rawdata = e.RawData;
-                    string data = e.Data;
-
-                    Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
-
-                    try
-                    {
-                        object method;
-                        result.TryGetValue("method", out method);
-                        if ((string)method == "heartbeat")
-                        {
-                            JObject @params = (JObject)result["params"];
-                            if ((string)@params["type"] == "test_request")
-                            {
-                                SendHeartbeat(socket);
-                                Console.WriteLine("heartbeat");
-                            }
-                        }
-                        else if ((string)method == "subscription")// publish message
-                        {
-                            publishMessage(message: rawdata, topic: "marketdata/deribitdata").ConfigureAwait(false);
-
-                        }
-                    }
-                    catch
-                    {
-                    }
-
-                };
-                socket.OnError += (sender, e) => Console.WriteLine(e.Message);
-                socket.OnClose += (sender, e) =>
-                {
-                    Console.WriteLine(e.Reason);
-                    socket.Connect();
-                };
-
-                socket.OnOpen += (sender, e) =>
-                {
-                    Console.WriteLine("Connection open: {0}", domain);
-                    List<string> channels = (from symbol in symbolList select $"quote.{symbol}").ToList();
-                    channels.Add("BTC-PERPETUAL");
-                    channels.Add("ETH-PERPETUAL");
-                    Subscribe(socket, channels);
-                    SetHeartbeat(socket);
-                };
+                socket.OnMessage += MessageHandler(socket);
+                socket.OnError += ErrorHandler();
+                socket.OnClose += CloseHandler(socket);
+                socket.OnOpen += OpenHandler(symbolList, socket);
 
                 socket.Connect();
 
@@ -97,7 +58,72 @@ namespace MarketConnectorCore
             Console.WriteLine("Exiting of program");
         }
 
+        #region Event Handlers
+        private EventHandler OpenHandler(List<string> symbolList, WebSocket socket)
+        {
+            return (sender, e) =>
+            {
+                Console.WriteLine("Connection open: {0}", domain);
+                List<string> channels = (from symbol in symbolList select $"quote.{symbol}").ToList();
+                channels.Add("BTC-PERPETUAL");
+                channels.Add("ETH-PERPETUAL");
+                Subscribe(socket, channels);
+                SetHeartbeat(socket);
+            };
+        }
 
+        private static EventHandler<CloseEventArgs> CloseHandler(WebSocket socket)
+        {
+            return (sender, e) =>
+            {
+                Console.WriteLine(e.Reason);
+                socket.Connect();
+            };
+        }
+
+        private static EventHandler<WebSocketSharp.ErrorEventArgs> ErrorHandler()
+        {
+            return (sender, e) => Console.WriteLine(e.Message);
+        }
+
+        private EventHandler<MessageEventArgs> MessageHandler(WebSocket socket)
+        {
+            return (sender, e) =>
+            {
+                var rawdata = e.RawData;
+                string data = e.Data;
+
+                Dictionary<string, object> result = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
+
+                try
+                {
+                    object method;
+                    result.TryGetValue("method", out method);
+                    if ((string)method == "heartbeat")
+                    {
+                        JObject @params = (JObject)result["params"];
+                        if ((string)@params["type"] == "test_request")
+                        {
+                            SendHeartbeat(socket);
+                            Console.WriteLine("heartbeat");
+                        }
+                    }
+                    else if ((string)method == "subscription")// publish message
+                    {
+                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: "marketdata/deribitdata", message: data));
+
+                    }
+                }
+                catch
+                {
+                }
+
+            };
+        }
+
+        #endregion
+
+        #region functions
         private void Subscribe(WebSocket socket, string channel)
         {
 
@@ -177,10 +203,26 @@ namespace MarketConnectorCore
 
             return symbolList;
         }
+        #endregion
 
-        public async Task publishMessage(string message, string topic)
+        #region MQTT publisher
+        private void StartPublish(object callback)
         {
-            await this.mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+            while (true)
+            {
+                FeedMessage _out;
+                if (DeribitFeedQueue.TryDequeue(out _out))
+                {
+                    publishMessage(message: _out.message, topic: _out.topic);
+                    Console.WriteLine(_out.message);
+                };
+
+            }
+        }
+
+        public void publishMessage(string message, string topic)
+        {
+            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
                         .WithPayload(message)
                         .WithAtLeastOnceQoS()
@@ -188,9 +230,9 @@ namespace MarketConnectorCore
                         .Build());
         }
 
-        public async Task publishMessage(Stream message, string topic)
+        public void publishMessage(Stream message, string topic)
         {
-            await this.mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
                         .WithPayload(message)
                         .WithAtLeastOnceQoS()
@@ -198,21 +240,38 @@ namespace MarketConnectorCore
                         .Build());
         }
 
-        public async Task publishMessage(byte[] message, string topic)
+        public void publishMessage(byte[] message, string topic)
         {
-            await this.mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
                         .WithPayload(message)
                         .WithAtLeastOnceQoS()
                         .WithRetainFlag(true)
                         .Build());
         }
-        public async Task mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
+        public void mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
         {
             Console.WriteLine($"####### Disconnected from MQTT server with reason {e.Exception} #########");
             Thread.Sleep((int)1e4);
             Console.WriteLine("Retrying connection...");
-            await this.mqttClient.ConnectAsync(this.mqttClientOptions);
+            mqttClient.ConnectAsync(this.mqttClientOptions);
         }
+        #endregion
+
+        #region FeedMessage class
+        public class FeedMessage
+        {
+            public string topic;
+            public string message;
+            public byte[] bytes;
+
+            public FeedMessage(string topic, string message)
+            {
+                this.topic = topic;
+                this.message = message;
+            }
+
+        }
+        #endregion
     }
 }

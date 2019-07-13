@@ -36,46 +36,126 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
+            ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
+
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
+
             await mqttClient.ConnectAsync(this.mqttClientOptions);
 
             settings.bitmexCurrencyList = GetBitmexSymbols();
 
             using (var socket = new WebSocket(domain))
             {
-                socket.MessageReceived += (sender, e) =>
-                {
-                    string data = e.Message;
-                    BitmexFeedQueue.Enqueue(new FeedMessage(topic: "marketdata/bitmexdata", message: data));
-                    publishMessage(message: data, topic: "marketdata/bitmexdata");
-                };
-                socket.Error += (sender, e) => Console.WriteLine(e.Exception);
-                socket.Closed+= (sender, e) =>
-                {
-                    Console.WriteLine(e.ToString());
-                    Console.WriteLine($"socket closed at {domain}");
-                    socket.Open();
-                };
+                socket.MessageReceived += MessageReceivedHandler();
+                socket.Error += ErrorHandler();
+                socket.Closed += ClosedHandler(socket);
 
-                socket.Opened += (sender, e) =>
-                {
-                    Console.WriteLine("Connection open: {0}", domain);
-                    Authenticate(socket);
-                    foreach (string _symbol in settings.bitmexCurrencyList)
-                    {
-                        Console.WriteLine($"BITMEX: loaded contract------{_symbol}");
-                        Subscribe(socket, $"trade:{_symbol}");
-                    }
-                    
-                };
+                socket.Opened += OpenedHandler(socket);
 
                 socket.Open();
-                
+
                 Console.ReadLine();
             }
             Console.WriteLine("Exiting of program");
         }
 
+        #region MQTT publisher
+        private void StartPublish(object callback)
+        {
+            while(true)
+            {
+                FeedMessage _out;
+                if (BitmexFeedQueue.TryDequeue(out _out))
+                {
+                    publishMessage(_out.message, _out.topic);
+                };
+
+            }
+        }
+
+        public void publishMessage(string message, string topic)
+        {
+            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                        .WithTopic(topic)
+                        .WithPayload(message)
+                        .WithAtLeastOnceQoS()
+                        .WithRetainFlag()
+                        .Build());
+        }
+
+        public void publishMessage(Stream message, string topic)
+        {
+            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                        .WithTopic(topic)
+                        .WithPayload(message)
+                        .WithAtLeastOnceQoS()
+                        .WithRetainFlag()
+                        .Build());
+        }
+
+        public void publishMessage(byte[] message, string topic)
+        {
+            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+                        .WithTopic(topic)
+                        .WithPayload(message)
+                        .WithAtLeastOnceQoS()
+                        .WithRetainFlag(true)
+                        .Build());
+        }
+
+        public void mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
+        {
+            Console.WriteLine($"####### Disconnected from MQTT server with reason {e.Exception} #########");
+            Thread.Sleep((int)1e4);
+            Console.WriteLine("Retrying connection...");
+            mqttClient.ConnectAsync(this.mqttClientOptions);
+        }
+
+        #endregion
+
+        #region Event Handlers
+        private EventHandler OpenedHandler(WebSocket socket)
+        {
+            return (sender, e) =>
+            {
+                Console.WriteLine("Connection open: {0}", domain);
+                Authenticate(socket);
+                foreach (string _symbol in settings.bitmexCurrencyList)
+                {
+                    Console.WriteLine($"BITMEX: loaded contract------{_symbol}");
+                    Subscribe(socket, $"trade:{_symbol}");
+                }
+
+            };
+        }
+
+        private EventHandler ClosedHandler(WebSocket socket)
+        {
+            return (sender, e) =>
+            {
+                Console.WriteLine(e.ToString());
+                Console.WriteLine($"socket closed at {domain}");
+                socket.Open();
+            };
+        }
+
+        private static EventHandler<SuperSocket.ClientEngine.ErrorEventArgs> ErrorHandler()
+        {
+            return (sender, e) => Console.WriteLine(e.Exception);
+        }
+
+        private EventHandler<MessageReceivedEventArgs> MessageReceivedHandler()
+        {
+            return (sender, e) =>
+            {
+                string data = e.Message;
+                BitmexFeedQueue.Enqueue(new FeedMessage(topic: "marketdata/bitmexdata", message: data));
+            };
+        }
+
+        #endregion
+
+        #region functions
         private void Authenticate(WebSocket socket)
         {
             Console.WriteLine("authenticating...");
@@ -127,44 +207,6 @@ namespace MarketConnectorCore
             }
         }
 
-        public async Task publishMessage(string message, string topic)
-        {
-            await this.mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
-                        .WithTopic(topic)
-                        .WithPayload(message)
-                        .WithAtLeastOnceQoS()
-                        .WithRetainFlag()
-                        .Build());
-        }
-
-        public async Task publishMessage(Stream message, string topic)
-        {
-            await this.mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
-                        .WithTopic(topic)
-                        .WithPayload(message)
-                        .WithAtLeastOnceQoS()
-                        .WithRetainFlag()
-                        .Build());
-        }
-
-        public async Task publishMessage(byte[] message, string topic)
-        {
-            await this.mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
-                        .WithTopic(topic)
-                        .WithPayload(message)
-                        .WithAtLeastOnceQoS()
-                        .WithRetainFlag(true)
-                        .Build());
-        }
-
-        public async Task mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
-        {
-            Console.WriteLine($"####### Disconnected from MQTT server with reason {e.Exception} #########");
-            Thread.Sleep((int)1e4);
-            Console.WriteLine("Retrying connection...");
-            await this.mqttClient.ConnectAsync(this.mqttClientOptions);
-        }
-
         public List<string> GetBitmexSymbols()
         {
             List<string> symbolList = new List<string> { };
@@ -178,5 +220,22 @@ namespace MarketConnectorCore
             }
             return symbolList;
         }
+
+        #endregion
+
+        #region FeedMessage class
+        public class FeedMessage
+        {
+            public string topic;
+            public string message;
+
+            public FeedMessage(string topic, string message)
+            {
+                this.topic = topic;
+                this.message = message;
+            }
+        }
+        #endregion
+
     }
 }
