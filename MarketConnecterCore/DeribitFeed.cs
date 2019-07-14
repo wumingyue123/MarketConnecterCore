@@ -77,7 +77,7 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 Console.WriteLine(e.Reason);
-                socket.Connect();
+                socket.Connect(); // reconnect to socket
             };
         }
 
@@ -214,7 +214,6 @@ namespace MarketConnectorCore
                 if (DeribitFeedQueue.TryDequeue(out _out))
                 {
                     publishMessage(message: _out.message, topic: _out.topic);
-                    Console.WriteLine(_out.message);
                 };
 
             }
