@@ -9,10 +9,10 @@ namespace MarketConnecterCore
         static void Main(string[] args)
         {
             BitmexFeed bitmexFeed = new BitmexFeed();
-            //DeribitFeed deribitFeed = new DeribitFeed();
+            DeribitFeed deribitFeed = new DeribitFeed();
 
             bitmexFeed.Start().ConfigureAwait(false);
-            //deribitFeed.Start().ConfigureAwait(false);
+            deribitFeed.Start().ConfigureAwait(false);
 
             Console.ReadLine();
         }
