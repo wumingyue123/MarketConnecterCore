@@ -15,12 +15,20 @@ using Newtonsoft.Json.Linq;
 using MarketConnecterCore;
 using MQTTnet.Client.Disconnecting;
 using System.Collections.Concurrent;
+using WebSocketSharp.Net;
 
 namespace MarketConnectorCore
 {
     public class DeribitFeed
     {
-        public string domain = "wss://www.deribit.com/ws/api/v2/";
+        private enum SslProtocolsHack
+        {
+            Tls = 192,
+            Tls11 = 768,
+            Tls12 = 3072
+        }
+
+        public string domain = "wss://www.deribit.com/ws/api/v2";
         public CancellationToken cancelToken = new CancellationToken(false);
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
@@ -77,7 +85,14 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 Console.WriteLine(e.Reason);
-                socket.Connect(); // reconnect to socket
+                Console.WriteLine($"error code {e.Code}");
+                var sslProtocolHack = (System.Security.Authentication.SslProtocols)(SslProtocolsHack.Tls12 | SslProtocolsHack.Tls11 | SslProtocolsHack.Tls);
+                //TlsHandshakeFailure
+                if (e.Code == 1015 && socket.SslConfiguration.EnabledSslProtocols != sslProtocolHack)
+                {
+                    socket.SslConfiguration.EnabledSslProtocols = sslProtocolHack;
+                    socket.Connect();
+                }
             };
         }
 
