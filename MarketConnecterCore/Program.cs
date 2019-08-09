@@ -10,9 +10,11 @@ namespace MarketConnecterCore
         {
             BitmexFeed bitmexFeed = new BitmexFeed();
             DeribitFeed deribitFeed = new DeribitFeed();
+            HuobiFeed huobiFeed = new HuobiFeed();
 
             bitmexFeed.Start().ConfigureAwait(false);
             deribitFeed.Start().ConfigureAwait(false);
+            huobiFeed.Start().ConfigureAwait(false);
 
             Console.ReadLine();
         }

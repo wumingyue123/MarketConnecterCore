@@ -26,7 +26,6 @@ namespace MarketConnectorCore
         public string domain = "wss://www.bitmex.com/realtime";
         private string _apiKey = "8YFN7m1nciXgxJru9TCALc-A"; // "-U3zj2B-smGIzZC87Lh4hxlK"
         private string _apiSecret = "UBwm38Beoa_rXaNcnznJvoSVDfLKSS9S40YayqZOza_O0Q1Y"; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
-        public CancellationToken cancelToken = new CancellationToken(false);
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)

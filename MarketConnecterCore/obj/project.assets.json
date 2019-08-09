@@ -2,7 +2,13 @@
   "version": 3,
   "targets": {
     ".NETCoreApp,Version=v3.0": {
-      "Microsoft.NETCore.Platforms/3.0.0-preview5.19224.8": {
+      "Microsoft.NETCore.App/3.0.0-preview6-27804-01": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.NETCore.Platforms": "3.0.0-preview6.19303.8"
+        }
+      },
+      "Microsoft.NETCore.Platforms/3.0.0-preview6.19303.8": {
         "type": "package",
         "compile": {
           "lib/netstandard1.0/_._": {}
@@ -31,7 +37,7 @@
           "ref/netstandard1.3/_._": {}
         }
       },
-      "MQTTnet/3.0.2": {
+      "MQTTnet/3.0.5": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "2.0.0",
@@ -70,7 +76,7 @@
           "lib/netstandard2.0/Newtonsoft.Json.dll": {}
         }
       },
-      "RestSharp/106.6.9": {
+      "RestSharp/106.6.10": {
         "type": "package",
         "compile": {
           "lib/netstandard2.0/RestSharp.dll": {}
@@ -1130,17 +1136,30 @@
     }
   },
   "libraries": {
-    "Microsoft.NETCore.Platforms/3.0.0-preview5.19224.8": {
-      "sha512": "MEt1XzSndofi4WBoGaRcMZdy9rqNtZITVZev2PTtXizcNe4csoN7U638Q73M93I/LxroBAI1IB+6HQOuklkKrw==",
+    "Microsoft.NETCore.App/3.0.0-preview6-27804-01": {
+      "sha512": "ZusFeFw4lm4f3W1GyaTDbEdqln8N0fWFijKpykPLLvrEEsppfZwx8n/UeMm/e56QspzGHKpJfmKi4YF2Z6+G6A==",
       "type": "package",
-      "path": "microsoft.netcore.platforms/3.0.0-preview5.19224.8",
+      "path": "microsoft.netcore.app/3.0.0-preview6-27804-01",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "microsoft.netcore.app.3.0.0-preview6-27804-01.nupkg.sha512",
+        "microsoft.netcore.app.nuspec"
+      ]
+    },
+    "Microsoft.NETCore.Platforms/3.0.0-preview6.19303.8": {
+      "sha512": "9nE9InmtkWL1ZIAvzZPoe8zzr8JNrmyofR5++0NCLomrLSbR70b60hLXFE/7vXIVgbKdTo3CTsCcFTOSZoOIEw==",
+      "type": "package",
+      "path": "microsoft.netcore.platforms/3.0.0-preview6.19303.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "LICENSE.TXT",
         "THIRD-PARTY-NOTICES.TXT",
         "lib/netstandard1.0/_._",
-        "microsoft.netcore.platforms.3.0.0-preview5.19224.8.nupkg.sha512",
+        "microsoft.netcore.platforms.3.0.0-preview6.19303.8.nupkg.sha512",
         "microsoft.netcore.platforms.nuspec",
         "runtime.json",
         "useSharedDesignerContext.txt",
@@ -1199,10 +1218,10 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "MQTTnet/3.0.2": {
-      "sha512": "DilAuqlooGvPMFP4pkbXYkU0MkWp1ty4vMecKQG5ZDSX7MUw4s71TrCrzNyCm07aUwGxL+x4udQuUhQPCQKWDg==",
+    "MQTTnet/3.0.5": {
+      "sha512": "3VVU0xffpIjYAd2S+edxiVTyBxtGlz0fSeoJlZVrHv6qgR6f7Tt8ag2EYlUqsZXmuHQFmXx3IGMEOPaOEtHLSg==",
       "type": "package",
-      "path": "mqttnet/3.0.2",
+      "path": "mqttnet/3.0.5",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1215,7 +1234,7 @@
         "lib/netstandard2.0/MQTTnet.dll",
         "lib/uap10.0/MQTTnet.dll",
         "lib/uap10.0/MQTTnet.pri",
-        "mqttnet.3.0.2.nupkg.sha512",
+        "mqttnet.3.0.5.nupkg.sha512",
         "mqttnet.nuspec"
       ]
     },
@@ -1379,10 +1398,10 @@
         "newtonsoft.json.nuspec"
       ]
     },
-    "RestSharp/106.6.9": {
-      "sha512": "/IAQTwlnlQcjlIyvelf+rhQcCRPy/r/0MftpNbff/D7PZVnmVXE4AnHk/F4NJJJEZbI4M+QTglB+xFkAyzr+9A==",
+    "RestSharp/106.6.10": {
+      "sha512": "x1FM32hjnVOIn+DKtCs2Y4Q2DCUE5KW08NUXUd4GjgKjE+5PE0F6e9XfUg7nILo05M0TA/HRkRD/SeQ8+duOUA==",
       "type": "package",
-      "path": "restsharp/106.6.9",
+      "path": "restsharp/106.6.10",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1390,7 +1409,7 @@
         "lib/net452/RestSharp.xml",
         "lib/netstandard2.0/RestSharp.dll",
         "lib/netstandard2.0/RestSharp.xml",
-        "restsharp.106.6.9.nupkg.sha512",
+        "restsharp.106.6.10.nupkg.sha512",
         "restsharp.nuspec"
       ]
     },
@@ -4050,44 +4069,40 @@
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.0": [
-      "MQTTnet >= 3.0.2",
-      "Microsoft.NETCore.Platforms >= 3.0.0-preview5.19224.8",
+      "MQTTnet >= 3.0.5",
+      "Microsoft.NETCore.App >= 3.0.0-preview6-27804-01",
       "Newtonsoft.Json >= 12.0.2",
-      "RestSharp >= 106.6.9",
+      "RestSharp >= 106.6.10",
       "WebSocket4Net >= 0.15.2",
       "WebSocketSharp-NonPreRelease >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MWu\\.nuget\\packages\\": {},
+    "C:\\Users\\wu_mi\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
+      "projectUniqueName": "C:\\Users\\wu_mi\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
       "projectName": "MarketConnecterCore",
-      "projectPath": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
-      "packagesPath": "C:\\Users\\MWu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\obj\\",
+      "projectPath": "C:\\Users\\wu_mi\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
+      "packagesPath": "C:\\Users\\wu_mi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\wu_mi\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\MWu\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\wu_mi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"
       ],
       "sources": {
-        "https://api.nuget.org/v3/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-aspnetcore-tooling/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-aspnetcore/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-entityframeworkcore/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/aspnet-extensions/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/dotnet-core/index.json": {},
-        "https://dotnetfeed.blob.core.windows.net/dotnet-windowsdesktop/index.json": {}
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.0": {
@@ -4105,12 +4120,13 @@
         "dependencies": {
           "MQTTnet": {
             "target": "Package",
-            "version": "[3.0.2, )"
+            "version": "[3.0.5, )"
           },
-          "Microsoft.NETCore.Platforms": {
+          "Microsoft.NETCore.App": {
+            "include": "None",
             "suppressParent": "All",
             "target": "Package",
-            "version": "[3.0.0-preview5.19224.8, )",
+            "version": "[3.0.0-preview6-27804-01, )",
             "autoReferenced": true
           },
           "Newtonsoft.Json": {
@@ -4119,7 +4135,7 @@
           },
           "RestSharp": {
             "target": "Package",
-            "version": "[106.6.9, )"
+            "version": "[106.6.10, )"
           },
           "WebSocket4Net": {
             "target": "Package",
@@ -4131,7 +4147,12 @@
           }
         },
         "imports": [
-          "net461"
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -4146,7 +4167,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'WebSocketSharp-NonPreRelease 1.0.0' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v3.0'. This package may not be fully compatible with your project.",
+      "message": "Package 'WebSocketSharp-NonPreRelease 1.0.0' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v3.0'. This package may not be fully compatible with your project.",
       "libraryId": "WebSocketSharp-NonPreRelease",
       "targetGraphs": [
         ".NETCoreApp,Version=v3.0"

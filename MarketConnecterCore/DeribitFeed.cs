@@ -29,7 +29,6 @@ namespace MarketConnectorCore
         }
 
         public string domain = "wss://www.deribit.com/ws/api/v2";
-        public CancellationToken cancelToken = new CancellationToken(false);
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
@@ -50,7 +49,7 @@ namespace MarketConnectorCore
             }
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect to mqtt server on disconnect
-            bool mqttconnected = mqttClient.ConnectAsync(this.mqttClientOptions).IsCompleted;
+            await mqttClient.ConnectAsync(this.mqttClientOptions);
 
             using (var socket = new WebSocket(domain))
             {
