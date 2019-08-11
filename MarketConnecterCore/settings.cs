@@ -35,5 +35,14 @@ namespace MarketConnecterCore
         public const string HUOBI_API_KEY = "hrf5gdfghe-3e9cb982-3f334417-1adcb";
         public const string HUOBI_API_SECRET = "31dbf87d-9933b39a-57e2a001-32809";
         #endregion
+
+        #region FTX settings
+        public const string FTXWSS = "wss://ftexchange.com/ws/";
+        public const string FTXRestURL = "https://ftx.com/api";
+        public const string FTXDataChannel = "marketdata/ftxdata";
+        public static List<string> FTXCurrencyList = new List<string> { "FTT/USD" };
+        public const string FTX_API_KEY = "9AKXeA7MPZPI3YOIvDehkdqtc4Mq7F3Q4z4lbEbj";
+        public const string FTX_API_SECRET = "fQtHhL5Gye9Bk6jAbwaEu3DfZ60_-zNk_Uy1Zlm4";
+        #endregion
     }
 }

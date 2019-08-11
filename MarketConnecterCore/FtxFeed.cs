@@ -23,15 +23,19 @@ using System.IO.Compression;
 
 namespace MarketConnectorCore
 {
-    public class HuobiFeed:FeedBase
+    public class FTXFeed:FeedBase
     {
-        public new string domain = settings.HuobiWSS;
-        IRestClient restClient = new RestClient(settings.HuobiRestURL);
-        public static ConcurrentQueue<FeedMessage> HuobiFeedQueue = new ConcurrentQueue<FeedMessage>();
+        enum channelTypes { trades, orderbook, ticker};
+
+        public new string domain = settings.FTXWSS;
+        IRestClient restClient = new RestClient(settings.FTXRestURL);
+        public static ConcurrentQueue<FeedMessage> FTXFeedQueue = new ConcurrentQueue<FeedMessage>();
         private WebSocket socket;
 
         public async Task Start()
         {
+            //settings.FTXCurrencyList = GetFTXSymbols();
+
             socket = new WebSocket(domain);
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
@@ -40,17 +44,17 @@ namespace MarketConnectorCore
 
             await mqttClient.ConnectAsync(this.mqttClientOptions);
 
-            socket.OnMessage += MessageReceivedHandler();
             socket.OnError += ErrorHandler();
             socket.OnClose += ClosedHandler(socket);
-
             socket.OnOpen += OpenedHandler(socket);
+
+            socket.OnMessage += MessageReceivedHandler();
 
             socket.Connect();
 
             Console.ReadLine();
             
-            Console.WriteLine("Exiting of Huobi Feed");
+            Console.WriteLine("Exiting of FTX Feed");
         }
 
         #region MQTT publisher
@@ -59,14 +63,10 @@ namespace MarketConnectorCore
             while (true)
             {
                 FeedMessage _out;
-                if (HuobiFeedQueue.TryDequeue(out _out))
+                if (FTXFeedQueue.TryDequeue(out _out))
                 {
                     string message = _out.message;
-                    if (message.Contains("ping"))
-                    {
-                        SendPong(message).ConfigureAwait(false);
-                    }
-                    else if (message.Contains("error"))
+                    if (message.Contains("error"))
                     {
                         Console.WriteLine($"Error: {message}");
                     }
@@ -87,9 +87,11 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 Console.WriteLine("Connection open: {0}", domain);
-                foreach (string _symbol in settings.huobiCurrencyList)
+                foreach (string _symbol in settings.FTXCurrencyList)
                 {
-                    Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1");
+                    Subscribe(socket, channel:channelTypes.trades.ToString(), symbol: _symbol);
+                    Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol);
+                    Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol);
                 }
 
             };
@@ -99,9 +101,8 @@ namespace MarketConnectorCore
         {
             return (sender, e) =>
             {
-                byte[] rawData = e.RawData;
-                string message = DecompressData(rawData);
-                HuobiFeedQueue.Enqueue(new FeedMessage(topic: settings.HuobiDataChannel, message: message));
+                string message = e.Data;
+                FTXFeedQueue.Enqueue(new FeedMessage(topic: settings.FTXDataChannel, message: message));
             };
         }
 
@@ -109,84 +110,67 @@ namespace MarketConnectorCore
 
         #region functions
 
-        private static void Subscribe(WebSocket socket, string channel)
+        private static void Subscribe(WebSocket socket, string channel, string symbol)
         {
             var toSend = new
             {
-                sub = channel,
-                id = "client1",
+                op = "subscribe",
+                channel = channel,
+                market = symbol,
             };
             Console.WriteLine(toSend);
             string sendJson = JsonConvert.SerializeObject(toSend);
             socket.Send(sendJson);
         }
 
-        public List<string> GetHuobiSymbols()
+        public List<string> GetFTXSymbols()
         {
             List<string> symbolList = new List<string> { };
-            var request = new RestRequest("v1/common/symbols");
+            var request = new RestRequest("markets");
             var response = this.restClient.Get(request);
             SymbolData responseData = JsonConvert.DeserializeObject<SymbolData>(response.Content);
-            List<SymbolData.SymbolInfo> symbolData = responseData.data;
+            List<SymbolData.SymbolInfo> symbolData = responseData.result;
             foreach (SymbolData.SymbolInfo _symbol in symbolData)
             {
-                Console.WriteLine($"HUOBI: loaded contract------{_symbol.symbol}      {_symbol.state}");
+                Console.WriteLine($"FTX: loaded contract------{_symbol.symbol}      {_symbol.enabled}");
                 symbolList.Add(_symbol.symbol);
-
             }
             return symbolList;
         }
-
-
-        public async Task SendPong(string pingMessage)
-        {
-            PingMessage ping = JsonConvert.DeserializeObject<PingMessage>(pingMessage);  // {"ping": 1492420473027}
-            Dictionary<string, string> data = new Dictionary<string, string>() { { "pong", ping.ping.ToString() } };// { "pong": 1492420473027}
-            this.socket.Send(JsonConvert.SerializeObject(data));
-            return;
-        }
         #endregion
-
         #region SymbolData class
 
         internal class SymbolData
         {
-            [JsonProperty("status")]
-            internal string status;
-            [JsonProperty("data")]
-            internal List<SymbolInfo> data;
+            [JsonProperty("success")]
+            internal bool success;
+            [JsonProperty("result")]
+            internal List<SymbolInfo> result;
 
             internal class SymbolInfo
             {
-                [JsonProperty("symbol")]
+                [JsonProperty("name")]
                 internal string symbol;
-                [JsonProperty("state")]
-                internal string state;
-                [JsonProperty("base-currency")]
+                [JsonProperty("type")]
+                internal string type;
+                [JsonProperty("baseCurrency")]
                 internal string baseCurrency;
-                [JsonProperty("quote-currency")]
+                [JsonProperty("quoteCurrency")]
                 internal string quoteCurrency;
-                [JsonProperty("price-precision")]
-                internal int pricePrecision;
-                [JsonProperty("amount-precision")]
-                internal int amountPrecision;
-                [JsonProperty("min-order-value")]
-                internal double minOrderValue;
-                [JsonProperty("min-order-amt")]
-                internal double minOrderAmt;
-                [JsonProperty("symbol-partition")]
-                internal string symbolPartition;
+                [JsonProperty("ask")]
+                internal double ask;
+                [JsonProperty("bid")]
+                internal double bid;
+                [JsonProperty("enabled")]
+                internal bool enabled;
+                [JsonProperty("last")]
+                internal double last;
+                [JsonProperty("priceIncrement")]
+                internal double priceIncrement;
+                [JsonProperty("sizeIncrement")]
+                internal double sizeIncrement;
 
             }
-        }
-
-        #endregion
-
-        #region PingMessage class
-        internal class PingMessage
-        {
-            [JsonProperty("ping")]
-            internal long ping;
         }
 
         #endregion
