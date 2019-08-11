@@ -23,14 +23,14 @@ namespace MarketConnectorCore
 {
     public class BitmexFeed
     {
-        public string domain = "wss://www.bitmex.com/realtime";
-        private string _apiKey = "8YFN7m1nciXgxJru9TCALc-A"; // "-U3zj2B-smGIzZC87Lh4hxlK"
-        private string _apiSecret = "UBwm38Beoa_rXaNcnznJvoSVDfLKSS9S40YayqZOza_O0Q1Y"; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
+        public string domain = settings.BitmexWSS;
+        private string _apiKey = settings.BITMEX_API_KEY; // "-U3zj2B-smGIzZC87Lh4hxlK"
+        private string _apiSecret = settings.BITMEX_API_SECRET; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
                                                           .Build();
-        IRestClient restClient = new RestClient("https://www.bitmex.com/api/v1/");
+        IRestClient restClient = new RestClient(settings.BitmexRestURL);
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
 
         public async Task Start()
@@ -148,7 +148,7 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 string data = e.Message;
-                BitmexFeedQueue.Enqueue(new FeedMessage(topic: "marketdata/bitmexdata", message: data));
+                BitmexFeedQueue.Enqueue(new FeedMessage(topic: settings.BitmexDataChannel, message: data));
             };
         }
 

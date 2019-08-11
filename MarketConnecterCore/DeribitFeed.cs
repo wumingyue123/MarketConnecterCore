@@ -28,12 +28,12 @@ namespace MarketConnectorCore
             Tls12 = 3072
         }
 
-        public string domain = "wss://www.deribit.com/ws/api/v2";
+        public string domain = settings.DeribitWSS;
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
                                                           .Build();
-        IRestClient restClient = new RestClient("https://www.deribit.com/api/v2/");
+        IRestClient restClient = new RestClient(settings.DeribitRESTURL);
         public static ConcurrentQueue<FeedMessage> DeribitFeedQueue = new ConcurrentQueue<FeedMessage>();
 
 
@@ -119,12 +119,11 @@ namespace MarketConnectorCore
                         if ((string)@params["type"] == "test_request")
                         {
                             SendHeartbeat(socket);
-                            Console.WriteLine("heartbeat");
                         }
                     }
                     else if ((string)method == "subscription")// publish message
                     {
-                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: "marketdata/deribitdata", message: data));
+                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: settings.DeribitDataChannel, message: data));
 
                     }
                 }

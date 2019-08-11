@@ -23,16 +23,14 @@ using System.IO.Compression;
 
 namespace MarketConnectorCore
 {
-    public class HuobiFeed
+    public class HuobiFeed:FeedBase
     {
-        public string domain = "wss://api.huobi.pro/ws";
-        private string _apiKey = "hrf5gdfghe-3e9cb982-3f334417-1adcb"; // " - U3zj2B-smGIzZC87Lh4hxlK"
-        private string _apiSecret = "31dbf87d-9933b39a-57e2a001-32809"; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
+        public new string domain = settings.HuobiWSS;
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
                                                           .Build();
-        IRestClient restClient = new RestClient("https://api.huobi.pro/");
+        IRestClient restClient = new RestClient(settings.HuobiRestURL);
         public static ConcurrentQueue<FeedMessage> HuobiFeedQueue = new ConcurrentQueue<FeedMessage>();
         private WebSocket socket;
 
