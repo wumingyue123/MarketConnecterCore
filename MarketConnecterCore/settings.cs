@@ -9,7 +9,7 @@ namespace MarketConnecterCore
     {
         // mqtt server settings
         public const string IPADDR = "localhost";
-        public const int PORT = 13000;
+        public const int PORT = 1883;
 
         #region Bitmex settings
         public const string BitmexWSS = "wss://www.bitmex.com/realtime";
