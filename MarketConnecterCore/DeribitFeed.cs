@@ -92,6 +92,10 @@ namespace MarketConnectorCore
                     socket.SslConfiguration.EnabledSslProtocols = sslProtocolHack;
                     socket.Connect();
                 }
+                else
+                {
+                    socket.Connect();
+                }
             };
         }
 
