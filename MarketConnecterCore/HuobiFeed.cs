@@ -70,8 +70,13 @@ namespace MarketConnectorCore
                     {
                         Console.WriteLine($"Error: {message}");
                     }
+                    else if (message.Contains("subbed"))
+                    {
+                        Console.WriteLine(message);
+                    }
                     else
                     {
+                        //Console.WriteLine(_out.message);
                         publishMessage(_out.message, _out.topic);
                     }
                 };

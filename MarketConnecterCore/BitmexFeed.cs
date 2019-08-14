@@ -132,6 +132,7 @@ namespace MarketConnectorCore
         {
             return (sender, e) =>
             {
+                Console.WriteLine($"Bitmex websocket closed with reason:");
                 Console.WriteLine(e.ToString());
                 Console.WriteLine($"socket closed at {domain}");
                 socket.Open();

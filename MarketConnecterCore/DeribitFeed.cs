@@ -83,6 +83,7 @@ namespace MarketConnectorCore
         {
             return (sender, e) =>
             {
+                Console.WriteLine("Deribit websocket closed with reason:" );
                 Console.WriteLine(e.Reason);
                 Console.WriteLine($"error code {e.Code}");
                 var sslProtocolHack = (System.Security.Authentication.SslProtocols)(SslProtocolsHack.Tls12 | SslProtocolsHack.Tls11 | SslProtocolsHack.Tls);
