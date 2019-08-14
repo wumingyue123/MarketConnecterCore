@@ -61,6 +61,7 @@ namespace MarketConnecterCore
         {
             return (sender, e) =>
             {
+                Console.WriteLine("Websocket closed with reason:");
                 Console.WriteLine(e.Reason);
                 Console.WriteLine($"error code {e.Code}");
                 var sslProtocolHack = (SslProtocols.Tls12 | SslProtocols.Tls11 | SslProtocols.Tls);
@@ -70,6 +71,11 @@ namespace MarketConnecterCore
                     socket.SslConfiguration.EnabledSslProtocols = sslProtocolHack;
                     socket.Connect();
                 }
+                else
+                {
+                    socket.Connect(); // try reconnecting
+                } 
+
             };
         }
 
