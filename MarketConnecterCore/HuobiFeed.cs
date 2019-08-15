@@ -32,6 +32,8 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
+            settings.huobiCurrencyList = GetHuobiSymbols();
+
             socket = new WebSocket(domain);
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
@@ -150,6 +152,7 @@ namespace MarketConnectorCore
             this.socket.Send(JsonConvert.SerializeObject(data));
             return;
         }
+
         #endregion
 
         #region SymbolData class

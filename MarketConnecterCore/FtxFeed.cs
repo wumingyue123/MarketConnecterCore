@@ -34,7 +34,7 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
-            //settings.FTXCurrencyList = GetFTXSymbols();
+            settings.FTXCurrencyList = GetFTXSymbols();
 
             socket = new WebSocket(domain);
 
@@ -126,7 +126,7 @@ namespace MarketConnectorCore
         public List<string> GetFTXSymbols()
         {
             List<string> symbolList = new List<string> { };
-            var request = new RestRequest("markets");
+            var request = new RestRequest("/markets");
             var response = this.restClient.Get(request);
             SymbolData responseData = JsonConvert.DeserializeObject<SymbolData>(response.Content);
             List<SymbolData.SymbolInfo> symbolData = responseData.result;
