@@ -96,6 +96,7 @@ namespace MarketConnectorCore
                 Console.WriteLine("Connection open: {0}", domain);
                 foreach (string _symbol in settings.huobiCurrencyList)
                 {
+                    Thread.Sleep(200);
                     Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1");
                 }
 

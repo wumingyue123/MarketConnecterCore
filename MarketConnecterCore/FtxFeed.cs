@@ -89,6 +89,7 @@ namespace MarketConnectorCore
                 Console.WriteLine("Connection open: {0}", domain);
                 foreach (string _symbol in settings.FTXCurrencyList)
                 {
+                    Thread.Sleep(200);
                     Subscribe(socket, channel:channelTypes.trades.ToString(), symbol: _symbol);
                     Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol);
                     Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol);
