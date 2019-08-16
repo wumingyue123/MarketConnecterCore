@@ -50,6 +50,11 @@ namespace MarketConnectorCore
 
             socket.Connect();
 
+            foreach (string _symbol in settings.huobiCurrencyList)
+            {
+                await Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1");
+            }
+
             Console.ReadLine();
             
             Console.WriteLine("Exiting of Huobi Feed");
@@ -94,10 +99,6 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 Console.WriteLine("Connection open: {0}", domain);
-                foreach (string _symbol in settings.huobiCurrencyList)
-                {
-                    Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1").ConfigureAwait(false);
-                }
 
             };
         }
@@ -123,7 +124,6 @@ namespace MarketConnectorCore
                 sub = channel,
                 id = "client1",
             };
-            Console.WriteLine(toSend);
             string sendJson = JsonConvert.SerializeObject(toSend);
             socket.Send(sendJson);
         }

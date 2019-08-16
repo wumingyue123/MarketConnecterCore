@@ -52,6 +52,13 @@ namespace MarketConnectorCore
 
             socket.Connect();
 
+            foreach (string _symbol in settings.FTXCurrencyList)
+            {
+                await Subscribe(socket, channel: channelTypes.trades.ToString(), symbol: _symbol);
+                await Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol);
+                await Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol);
+            }
+
             Console.ReadLine();
             
             Console.WriteLine("Exiting of FTX Feed");
@@ -87,12 +94,7 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 Console.WriteLine("Connection open: {0}", domain);
-                foreach (string _symbol in settings.FTXCurrencyList)
-                {
-                    Subscribe(socket, channel:channelTypes.trades.ToString(), symbol: _symbol).ConfigureAwait(false);
-                    Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol).ConfigureAwait(false);
-                    Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol).ConfigureAwait(false);
-                }
+
 
             };
         }
