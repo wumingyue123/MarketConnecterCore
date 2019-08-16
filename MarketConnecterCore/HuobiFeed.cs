@@ -96,8 +96,7 @@ namespace MarketConnectorCore
                 Console.WriteLine("Connection open: {0}", domain);
                 foreach (string _symbol in settings.huobiCurrencyList)
                 {
-                    Thread.Sleep(200);
-                    Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1");
+                    Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1").ConfigureAwait(false);
                 }
 
             };
@@ -117,7 +116,7 @@ namespace MarketConnectorCore
 
         #region functions
 
-        private static void Subscribe(WebSocket socket, string channel)
+        private async Task Subscribe(WebSocket socket, string channel)
         {
             var toSend = new
             {

@@ -89,10 +89,9 @@ namespace MarketConnectorCore
                 Console.WriteLine("Connection open: {0}", domain);
                 foreach (string _symbol in settings.FTXCurrencyList)
                 {
-                    Thread.Sleep(200);
-                    Subscribe(socket, channel:channelTypes.trades.ToString(), symbol: _symbol);
-                    Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol);
-                    Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol);
+                    Subscribe(socket, channel:channelTypes.trades.ToString(), symbol: _symbol).ConfigureAwait(false);
+                    Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol).ConfigureAwait(false);
+                    Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol).ConfigureAwait(false);
                 }
 
             };
@@ -111,7 +110,7 @@ namespace MarketConnectorCore
 
         #region functions
 
-        private static void Subscribe(WebSocket socket, string channel, string symbol)
+        private async Task Subscribe(WebSocket socket, string channel, string symbol)
         {
             var toSend = new
             {
