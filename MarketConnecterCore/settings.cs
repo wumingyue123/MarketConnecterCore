@@ -40,7 +40,7 @@ namespace MarketConnecterCore
         public const string FTXWSS = "wss://ftexchange.com/ws/";
         public const string FTXRestURL = "https://ftx.com/api";
         public const string FTXDataChannel = "marketdata/ftxdata";
-        public static List<string> FTXCurrencyList = new List<string> { "FTT/USD" };
+        public static List<string> FTXCurrencyList = new List<string> { "FTT/USD", "FTT/USDT", "FTT/BTC" };
         public const string FTX_API_KEY = "9AKXeA7MPZPI3YOIvDehkdqtc4Mq7F3Q4z4lbEbj";
         public const string FTX_API_SECRET = "fQtHhL5Gye9Bk6jAbwaEu3DfZ60_-zNk_Uy1Zlm4";
         #endregion

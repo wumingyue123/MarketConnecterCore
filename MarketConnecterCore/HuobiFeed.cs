@@ -32,7 +32,7 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
-            settings.huobiCurrencyList = GetHuobiSymbols();
+            //settings.huobiCurrencyList = GetHuobiSymbols();
 
             socket = new WebSocket(domain);
 

@@ -34,7 +34,7 @@ namespace MarketConnectorCore
 
         public async Task Start()
         {
-            settings.FTXCurrencyList = GetFTXSymbols();
+            //settings.FTXCurrencyList = GetFTXSymbols();
 
             socket = new WebSocket(domain);
 
