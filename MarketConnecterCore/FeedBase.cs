@@ -85,9 +85,9 @@ namespace MarketConnecterCore
         }
 
 
-        public void publishMessage(string message, string topic)
+        public async Task publishMessage(string message, string topic)
         {
-            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+            await mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
                         .WithPayload(message)
                         .WithAtLeastOnceQoS()
@@ -95,9 +95,9 @@ namespace MarketConnecterCore
                         .Build());
         }
 
-        public void publishMessage(Stream message, string topic)
+        public async Task publishMessage(Stream message, string topic)
         {
-            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+            await mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
                         .WithPayload(message)
                         .WithAtLeastOnceQoS()
@@ -105,9 +105,9 @@ namespace MarketConnecterCore
                         .Build());
         }
 
-        public void publishMessage(byte[] message, string topic)
+        public async Task publishMessage(byte[] message, string topic)
         {
-            mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
+            await mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
                         .WithPayload(message)
                         .WithAtLeastOnceQoS()

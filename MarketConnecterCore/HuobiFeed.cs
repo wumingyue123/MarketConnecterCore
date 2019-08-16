@@ -52,7 +52,7 @@ namespace MarketConnectorCore
 
             foreach (string _symbol in settings.huobiCurrencyList)
             {
-                await Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1");
+                Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1").ConfigureAwait(false);
             }
 
             Console.ReadLine();
@@ -63,30 +63,36 @@ namespace MarketConnectorCore
         #region MQTT publisher
         private void StartPublish(object callback)
         {
+
             while (true)
             {
                 FeedMessage _out;
-                if (HuobiFeedQueue.TryDequeue(out _out))
+
+                try
                 {
-                    string message = _out.message;
-                    if (message.Contains("ping"))
+                    if (HuobiFeedQueue.TryDequeue(out _out))
                     {
-                        SendPong(message).ConfigureAwait(false);
-                    }
-                    else if (message.Contains("error"))
-                    {
-                        Console.WriteLine($"Error: {message}");
-                    }
-                    else if (message.Contains("subbed"))
-                    {
-                        Console.WriteLine(message);
-                    }
-                    else
-                    {
-                        //Console.WriteLine(_out.message);
-                        publishMessage(_out.message, _out.topic);
-                    }
-                };
+                        string message = _out.message;
+                        if (message.Contains("ping"))
+                        {
+                            SendPong(message).ConfigureAwait(false);
+                        }
+                        else if (message.Contains("error"))
+                        {
+                            Console.WriteLine($"Error: {message}");
+                        }
+                        else if (message.Contains("subbed"))
+                        {
+                            Console.WriteLine(message);
+                        }
+                        else
+                        {
+                            //Console.WriteLine(_out.message);
+                            publishMessage(_out.message, _out.topic);
+                        }
+                    };
+                }
+                catch { }
 
             }
         }

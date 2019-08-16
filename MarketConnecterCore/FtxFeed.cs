@@ -54,9 +54,9 @@ namespace MarketConnectorCore
 
             foreach (string _symbol in settings.FTXCurrencyList)
             {
-                await Subscribe(socket, channel: channelTypes.trades.ToString(), symbol: _symbol);
-                await Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol);
-                await Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol);
+                Subscribe(socket, channel: channelTypes.trades.ToString(), symbol: _symbol).ConfigureAwait(false);
+                Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol).ConfigureAwait(false);
+                Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol).ConfigureAwait(false);
             }
 
             Console.ReadLine();
