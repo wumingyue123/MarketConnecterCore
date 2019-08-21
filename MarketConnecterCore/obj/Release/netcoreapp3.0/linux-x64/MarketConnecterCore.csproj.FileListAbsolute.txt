@@ -14,3 +14,7 @@ C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\ne
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.csproj.CopyComplete
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Release\netcoreapp3.0\linux-x64\MarketConnecterCore.pdb
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\SuperSocket.ClientEngine.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\WebSocket4Net.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\HuobiLibrary.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\linux-x64\HuobiLibrary.pdb
