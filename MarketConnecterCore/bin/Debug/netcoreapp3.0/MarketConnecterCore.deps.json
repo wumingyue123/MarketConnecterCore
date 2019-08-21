@@ -13,7 +13,8 @@
           "Newtonsoft.Json": "12.0.2",
           "RestSharp": "106.6.10",
           "WebSocket4Net": "0.15.2",
-          "WebSocketSharp-NonPreRelease": "1.0.0"
+          "WebSocketSharp-NonPreRelease": "1.0.0",
+          "HuobiLibrary": "1.0.0.0"
         },
         "runtime": {
           "MarketConnecterCore.dll": {}
@@ -654,6 +655,14 @@
             "fileVersion": "1.0.2.32519"
           }
         }
+      },
+      "HuobiLibrary/1.0.0.0": {
+        "runtime": {
+          "HuobiLibrary.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
       }
     }
   },
@@ -1166,6 +1175,11 @@
       "sha512": "sha512-O1TLFp8hwgVFEI0bjAGLAdsGwtT+yggdRYAlOSw+ZCtwHVc5LmUBU52H+KgG37med9e11lsxmlNzzlF6/hW+Bg==",
       "path": "websocketsharp-nonprerelease/1.0.0",
       "hashPath": "websocketsharp-nonprerelease.1.0.0.nupkg.sha512"
+    },
+    "HuobiLibrary/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

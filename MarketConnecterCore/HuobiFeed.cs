@@ -20,6 +20,7 @@ using System.Data.Common;
 using System.Security.Authentication;
 using WebSocketSharp;
 using System.IO.Compression;
+using HuobiLibrary.Model;
 
 namespace MarketConnectorCore
 {
@@ -133,9 +134,9 @@ namespace MarketConnectorCore
             List<string> symbolList = new List<string> { };
             var request = new RestRequest("v1/common/symbols");
             var response = this.restClient.Get(request);
-            SymbolData responseData = JsonConvert.DeserializeObject<SymbolData>(response.Content);
-            List<SymbolData.SymbolInfo> symbolData = responseData.data;
-            foreach (SymbolData.SymbolInfo _symbol in symbolData)
+            HuobiLibrary.Model.SymbolData responseData = JsonConvert.DeserializeObject<HuobiLibrary.Model.SymbolData>(response.Content);
+            List<HuobiLibrary.Model.SymbolData.SymbolInfo> symbolData = responseData.data;
+            foreach (HuobiLibrary.Model.SymbolData.SymbolInfo _symbol in symbolData)
             {
                 Console.WriteLine($"HUOBI: loaded contract------{_symbol.symbol}      {_symbol.state}");
                 symbolList.Add(_symbol.symbol);
@@ -155,49 +156,6 @@ namespace MarketConnectorCore
 
         #endregion
 
-        #region SymbolData class
-
-        internal class SymbolData
-        {
-            [JsonProperty("status")]
-            internal string status;
-            [JsonProperty("data")]
-            internal List<SymbolInfo> data;
-
-            internal class SymbolInfo
-            {
-                [JsonProperty("symbol")]
-                internal string symbol;
-                [JsonProperty("state")]
-                internal string state;
-                [JsonProperty("base-currency")]
-                internal string baseCurrency;
-                [JsonProperty("quote-currency")]
-                internal string quoteCurrency;
-                [JsonProperty("price-precision")]
-                internal int pricePrecision;
-                [JsonProperty("amount-precision")]
-                internal int amountPrecision;
-                [JsonProperty("min-order-value")]
-                internal double minOrderValue;
-                [JsonProperty("min-order-amt")]
-                internal double minOrderAmt;
-                [JsonProperty("symbol-partition")]
-                internal string symbolPartition;
-
-            }
-        }
-
-        #endregion
-
-        #region PingMessage class
-        internal class PingMessage
-        {
-            [JsonProperty("ping")]
-            internal long ping;
-        }
-
-        #endregion
 
     }
 }
