@@ -24,7 +24,7 @@ using HuobiLibrary.Model;
 
 namespace MarketConnectorCore
 {
-    public class HuobiFeed:FeedBase
+    public class HuobiFeed: MarketConnecterCore.FeedBase
     {
         public new string domain = settings.HuobiWSS;
         IRestClient restClient = new RestClient(settings.HuobiRestURL);
