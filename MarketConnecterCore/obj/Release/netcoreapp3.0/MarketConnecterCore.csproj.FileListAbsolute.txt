@@ -19,3 +19,5 @@ C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\ne
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\WebSocket4Net.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\HuobiLibrary.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\HuobiLibrary.pdb
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\FTXLibrary.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Release\netcoreapp3.0\FTXLibrary.pdb
