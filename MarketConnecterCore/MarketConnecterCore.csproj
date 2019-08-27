@@ -14,6 +14,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="FTXLibrary">
+      <HintPath>..\..\FTTLibrary\bin\Debug\netstandard2.0\FTXLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="HuobiLibrary">
       <HintPath>..\..\HuobiLibrary\bin\Debug\netstandard2.0\HuobiLibrary.dll</HintPath>
     </Reference>

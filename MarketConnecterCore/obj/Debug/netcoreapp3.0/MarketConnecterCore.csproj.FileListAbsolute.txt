@@ -37,3 +37,6 @@ C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netc
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csproj.CopyComplete
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.dll
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.pdb
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\FTXLibrary.dll
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\FTXLibrary.pdb
+C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csprojAssemblyReference.cache
