@@ -79,9 +79,14 @@ namespace MarketConnecterCore
             };
         }
 
-        internal static EventHandler<WebSocketSharp.ErrorEventArgs> ErrorHandler()
+        internal static EventHandler<WebSocketSharp.ErrorEventArgs> ErrorHandler(WebSocket socket)
         {
-            return (sender, e) => Console.WriteLine(e.Exception);
+            return (sender, e) =>
+            {
+                Console.WriteLine(e.Exception);
+                socket.Connect();
+            };
+
         }
 
 

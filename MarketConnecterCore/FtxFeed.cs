@@ -35,7 +35,7 @@ namespace MarketConnectorCore
 
             await mqttClient.ConnectAsync(this.mqttClientOptions);
 
-            socket.OnError += ErrorHandler();
+            socket.OnError += ErrorHandler(socket);
             socket.OnClose += ClosedHandler(socket);
             socket.OnOpen += OpenedHandler(socket);
 
