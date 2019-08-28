@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Runtime.CompilerServices;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading;
@@ -73,7 +74,8 @@ namespace MarketConnecterCore
                 }
                 else
                 {
-                    socket.Connect(); // try reconnecting
+                    Reconnect(socket);
+                    
                 } 
 
             };
@@ -84,8 +86,32 @@ namespace MarketConnecterCore
             return (sender, e) =>
             {
                 Console.WriteLine(e.Exception);
-                socket.Connect();
+                Reconnect(socket);    
+                
             };
+
+        }
+
+        internal static void Reconnect(WebSocket socket, int timeout = 3000)
+        {
+            if(socket.ReadyState == WebSocketState.Closed)
+            {
+                socket.Connect();
+            }
+            else if (socket.ReadyState == WebSocketState.Closing)
+            {
+                Thread.Sleep(timeout);
+                Reconnect(socket, timeout);
+            }
+            else if (socket.ReadyState == WebSocketState.Connecting)
+            {
+                Thread.Sleep(timeout);
+                Reconnect(socket, timeout);
+            }
+            else if (socket.ReadyState == WebSocketState.Open)
+            {
+                return;
+            }
 
         }
 
