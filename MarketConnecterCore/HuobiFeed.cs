@@ -51,10 +51,7 @@ namespace MarketConnectorCore
 
             socket.Connect();
 
-            foreach (string _symbol in settings.huobiCurrencyList)
-            {
-                await Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1");
-            }
+        
 
             Console.ReadLine();
             
@@ -99,8 +96,11 @@ namespace MarketConnectorCore
         {
             return (sender, e) =>
             {
+                foreach (string _symbol in settings.huobiCurrencyList)
+                {
+                    Subscribe(socket, $"market.{_symbol.ToLower()}.depth.step1").ConfigureAwait(false);
+                }
                 Console.WriteLine("Connection open: {0}", domain);
-
             };
         }
 

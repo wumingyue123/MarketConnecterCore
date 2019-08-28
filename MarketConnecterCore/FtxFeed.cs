@@ -21,13 +21,10 @@ namespace MarketConnectorCore
         public new string domain = SETTINGS.FTXWSS;
         IRestClient restClient = new RestClient(SETTINGS.FTXRestURL);
         public static ConcurrentQueue<FeedMessage> FTXFeedQueue = new ConcurrentQueue<FeedMessage>();
-        private WebSocket socket;
 
         public async Task Start()
         {
             //settings.FTXCurrencyList = GetFTXSymbols();
-
-            socket = new WebSocket(domain);
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
 
@@ -35,20 +32,16 @@ namespace MarketConnectorCore
 
             await mqttClient.ConnectAsync(this.mqttClientOptions);
 
-            socket.OnError += ErrorHandler(socket);
-            socket.OnClose += ClosedHandler(socket);
-            socket.OnOpen += OpenedHandler(socket);
-
-            socket.OnMessage += MessageReceivedHandler();
-
-            socket.Connect();
-
-            foreach (string _symbol in settings.FTXCurrencyList)
+            using (var socket = new WebSocket(domain))
             {
-                Subscribe(socket, channel: channelTypes.trades.ToString(), symbol: _symbol).ConfigureAwait(false);
-                Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol).ConfigureAwait(false);
-                Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol).ConfigureAwait(false);
+                socket.OnError += ErrorHandler(socket);
+                socket.OnClose += ClosedHandler(socket);
+                socket.OnOpen += OpenedHandler(socket);
+                socket.OnMessage += MessageReceivedHandler();
+
+                socket.Connect();
             }
+            
 
             Console.ReadLine();
             
@@ -84,6 +77,13 @@ namespace MarketConnectorCore
         {
             return (sender, e) =>
             {
+                foreach (string _symbol in settings.FTXCurrencyList)
+                {
+                    Subscribe(socket, channel: channelTypes.trades.ToString(), symbol: _symbol).ConfigureAwait(false);
+                    Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol).ConfigureAwait(false);
+                    Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol).ConfigureAwait(false);
+                }
+
                 Console.WriteLine("Connection open: {0}", domain);
             };
         }
