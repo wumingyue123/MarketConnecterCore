@@ -14,10 +14,8 @@ using System.Net.Sockets;
 using MarketConnecterCore;
 using MQTTnet.Client.Disconnecting;
 using RestSharp;
-using System.Runtime.CompilerServices;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
-using System.Data.Common;
 
 namespace MarketConnectorCore
 {

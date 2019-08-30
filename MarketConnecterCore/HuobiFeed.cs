@@ -51,8 +51,6 @@ namespace MarketConnectorCore
 
             socket.Connect();
 
-        
-
             Console.ReadLine();
             
             Console.WriteLine("Exiting of Huobi Feed");
