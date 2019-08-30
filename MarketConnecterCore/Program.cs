@@ -16,7 +16,7 @@ namespace MarketConnecterCore
             bitmexFeed.Start().ConfigureAwait(false);
             deribitFeed.Start().ConfigureAwait(false);
             huobiFeed.Start().ConfigureAwait(false);
-            FTXFeed.Start().ConfigureAwait(false);
+            FTXFeed.Start();
 
             Console.ReadLine();
         }

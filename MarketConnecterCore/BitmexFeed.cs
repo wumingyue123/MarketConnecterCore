@@ -53,7 +53,7 @@ namespace MarketConnectorCore
 
                 Console.ReadLine();
             }
-            Console.WriteLine("Exiting of program");
+            Console.WriteLine("Exiting of bitmex feed");
         }
 
         #region MQTT publisher

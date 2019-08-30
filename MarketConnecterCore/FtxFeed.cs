@@ -43,7 +43,7 @@ namespace MarketConnectorCore
         }
 
 
-        public async Task Start()
+        public void Start()
         {
             //settings.FTXCurrencyList = GetFTXSymbols();
 
@@ -51,7 +51,7 @@ namespace MarketConnectorCore
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
 
-            await mqttClient.ConnectAsync(this.mqttClientOptions);
+            mqttClient.ConnectAsync(this.mqttClientOptions);
 
             using (var socket = new WebSocket(domain))
             {
@@ -83,10 +83,9 @@ namespace MarketConnectorCore
                     }
                     else
                     {
-                        publishMessage(_out.message, _out.topic);
+                        publishMessage(_out.message, _out.topic).ConfigureAwait(false);
                     }
                 };
-
             }
         }
 
@@ -97,14 +96,14 @@ namespace MarketConnectorCore
         {
             return (sender, e) =>
             {
+                Console.WriteLine("Connection open: {0}", domain);
+
                 foreach (string _symbol in settings.FTXCurrencyList)
                 {
-                    Subscribe(socket, channel: channelTypes.trades.ToString(), symbol: _symbol).ConfigureAwait(false);
-                    Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol).ConfigureAwait(false);
-                    Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol).ConfigureAwait(false);
+                    Subscribe(socket, channel: channelTypes.trades.ToString(), symbol: _symbol).ContinueWith((x)=>
+                    Subscribe(socket, channel: channelTypes.ticker.ToString(), symbol: _symbol).ContinueWith((x)=>
+                    Subscribe(socket, channel: channelTypes.orderbook.ToString(), symbol: _symbol)));
                 }
-
-                Console.WriteLine("Connection open: {0}", domain);
             };
         }
 
@@ -114,6 +113,24 @@ namespace MarketConnectorCore
             {
                 string message = e.Message;
                 FTXFeedQueue.Enqueue(new FeedMessage(topic: settings.FTXDataChannel, message: message));
+            };
+        }
+
+        internal EventHandler ClosedHandler(WebSocket socket)
+        {
+            return (sender, e) =>
+            {
+                Console.WriteLine($"{DateTime.Now.ToString()} FTX Connection closed");
+                Reconnect(socket);
+            };
+        }
+
+        internal static EventHandler<SuperSocket.ClientEngine.ErrorEventArgs> ErrorHandler(WebSocket socket)
+        {
+            return (sender, e) =>
+            {
+                Console.WriteLine($"{DateTime.Now.ToString()} FTX ERROR: {e.Exception}");
+                Reconnect(socket);
             };
         }
 
@@ -165,28 +182,11 @@ namespace MarketConnectorCore
         }
         #endregion
 
-        internal EventHandler ClosedHandler(WebSocket socket)
-        {
-            return (sender, e) =>
-            {
-                    Reconnect(socket);
-
-            };
-        }
-
-        internal static EventHandler<SuperSocket.ClientEngine.ErrorEventArgs> ErrorHandler(WebSocket socket)
-        {
-            return (sender, e) =>
-            {
-                Console.WriteLine(e.Exception);
-                Reconnect(socket);
-            };
-
-        }
+        
 
         public void mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
         {
-            Console.WriteLine($"####### Bitmex Disconnected from MQTT server with reason {e.Exception} #########");
+            Console.WriteLine($"####### FTX Disconnected from MQTT server with reason {e.Exception} #########");
             Thread.Sleep((int)1e4);
             Console.WriteLine("Retrying connection...");
             mqttClient.ConnectAsync(this.mqttClientOptions);

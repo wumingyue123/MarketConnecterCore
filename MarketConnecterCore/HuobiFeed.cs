@@ -1,25 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Threading;
 using Newtonsoft.Json;
-using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Client.Options;
-using System.IO;
 using System.Net.Sockets;
 using MarketConnecterCore;
-using MQTTnet.Client.Disconnecting;
 using RestSharp;
-using System.Runtime.CompilerServices;
-using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
-using System.Data.Common;
-using System.Security.Authentication;
 using WebSocketSharp;
-using System.IO.Compression;
 using HuobiLibrary.Model;
 
 namespace MarketConnectorCore
