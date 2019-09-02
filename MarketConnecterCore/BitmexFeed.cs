@@ -27,17 +27,18 @@ namespace MarketConnectorCore
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
+                                                          .WithCleanSession()
                                                           .Build();
         IRestClient restClient = new RestClient(settings.BitmexRestURL);
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
 
-        public async Task Start()
+        public void Start()
         {
-            ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
+            ThreadPool.QueueUserWorkItem(StartPublish);
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
 
-            await mqttClient.ConnectAsync(this.mqttClientOptions);
+            mqttClient.ConnectAsync(this.mqttClientOptions);
 
             settings.bitmexCurrencyList = GetBitmexSymbols();
 
@@ -46,7 +47,6 @@ namespace MarketConnectorCore
                 socket.MessageReceived += MessageReceivedHandler();
                 socket.Error += ErrorHandler();
                 socket.Closed += ClosedHandler(socket);
-
                 socket.Opened += OpenedHandler(socket);
 
                 socket.Open();

@@ -2,6 +2,7 @@
 using MarketConnectorCore;
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MarketConnecterCore
 {
@@ -15,8 +16,8 @@ namespace MarketConnecterCore
             //HuobiFeed huobiFeed = new HuobiFeed();
             //FTXFeed FTXFeed = new FTXFeed();
 
-            bitmexFeed.Start().ConfigureAwait(false);
-            deribitFeed.Start().ConfigureAwait(false);
+            Task.Run(()=>bitmexFeed.Start());
+            Task.Run(()=>deribitFeed.Start());
             //huobiFeed.Start().ConfigureAwait(false);
             //FTXFeed.Start();
 

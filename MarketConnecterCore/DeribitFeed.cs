@@ -32,12 +32,13 @@ namespace MarketConnectorCore
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
+                                                          .WithCleanSession()
                                                           .Build();
         IRestClient restClient = new RestClient(settings.DeribitRESTURL);
         public static ConcurrentQueue<FeedMessage> DeribitFeedQueue = new ConcurrentQueue<FeedMessage>();
 
 
-        public async Task Start()
+        public void Start()
         {
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
 
@@ -49,7 +50,7 @@ namespace MarketConnectorCore
             }
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect to mqtt server on disconnect
-            await mqttClient.ConnectAsync(this.mqttClientOptions);
+            mqttClient.ConnectAsync(this.mqttClientOptions);
 
             using (var socket = new WebSocket(domain))
             {
