@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v3.0": {
       "MarketConnecterCore/1.0.0": {
         "dependencies": {
+          "CommandLineParser": "2.6.0",
           "MQTTnet": "3.0.5",
           "Newtonsoft.Json": "12.0.2",
           "RestSharp": "106.6.10",
@@ -18,6 +19,14 @@
         },
         "runtime": {
           "MarketConnecterCore.dll": {}
+        }
+      },
+      "CommandLineParser/2.6.0": {
+        "runtime": {
+          "lib/netstandard2.0/CommandLine.dll": {
+            "assemblyVersion": "2.6.0.0",
+            "fileVersion": "2.6.0.0"
+          }
         }
       },
       "Microsoft.NETCore.Platforms/1.1.0": {},
@@ -674,6 +683,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "CommandLineParser/2.6.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jjJ2Ey2pPY6OeY74Qau2cH+M+pN4kvvSP+kKlDzIZUcJs1oK+QlNjQYnm8HQj2fQa2aZLtwJig4MI0Vbx4YBSA==",
+      "path": "commandlineparser/2.6.0",
+      "hashPath": "commandlineparser.2.6.0.nupkg.sha512"
     },
     "Microsoft.NETCore.Platforms/1.1.0": {
       "type": "package",

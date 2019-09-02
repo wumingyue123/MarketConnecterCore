@@ -41,6 +41,10 @@
       "frameworks": {
         "netcoreapp3.0": {
           "dependencies": {
+            "CommandLineParser": {
+              "target": "Package",
+              "version": "[2.6.0, )"
+            },
             "MQTTnet": {
               "target": "Package",
               "version": "[3.0.5, )"
