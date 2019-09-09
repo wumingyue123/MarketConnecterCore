@@ -105,9 +105,19 @@ namespace MarketConnectorCore
             Console.WriteLine($"####### Bitmex Disconnected from MQTT server with reason {e.Exception} #########");
             Thread.Sleep((int)1e4);
             Console.WriteLine("Retrying connection...");
-            mqttClient.ConnectAsync(this.mqttClientOptions);
+            ReconnectMqtt();
         }
-
+               
+        internal void ReconnectMqtt(int timeout = 3000)
+        {
+            if (!mqttClient.IsConnected)
+            {
+                mqttClient.ReconnectAsync();
+                Thread.Sleep(timeout);
+                ReconnectMqtt(timeout);
+            }
+            else { return; }
+        }
         #endregion
 
         #region Event Handlers
