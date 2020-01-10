@@ -40,9 +40,9 @@ namespace MarketConnectorCore
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
 
-            mqttClient.ConnectAsync(this.mqttClientOptions).Wait();
-
             mqttClient.UseConnectedHandler(mqttConnectedHandler);
+
+            mqttClient.ConnectAsync(this.mqttClientOptions).Wait();
 
             settings.bitmexCurrencyList = GetBitmexSymbols();
 
