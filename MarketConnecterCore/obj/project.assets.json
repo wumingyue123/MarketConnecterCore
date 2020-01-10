@@ -4097,7 +4097,7 @@
       "outputPath": "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/MWu/.config/NuGet/NuGet.Config"
+        "/Users/MWu/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"

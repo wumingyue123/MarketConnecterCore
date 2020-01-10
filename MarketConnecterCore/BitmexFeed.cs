@@ -13,6 +13,7 @@ using System.IO;
 using System.Net.Sockets;
 using MarketConnecterCore;
 using MQTTnet.Client.Disconnecting;
+using MQTTnet.Client.Connecting;
 using RestSharp;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
@@ -39,7 +40,9 @@ namespace MarketConnectorCore
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
 
-            mqttClient.ConnectAsync(this.mqttClientOptions);
+            mqttClient.ConnectAsync(this.mqttClientOptions).Wait();
+
+            mqttClient.UseConnectedHandler(mqttConnectedHandler);
 
             settings.bitmexCurrencyList = GetBitmexSymbols();
 
@@ -103,12 +106,17 @@ namespace MarketConnectorCore
 
         public void mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
         {
-            Console.WriteLine($"####### Bitmex Disconnected from MQTT server with reason {e.Exception} #########");
+            Console.WriteLine($"####### BitmexFeed: MQTT server disconnected with reason {e.AuthenticateResult.ReasonString} {e.Exception.Message} #########");
             Thread.Sleep((int)1e4);
             Console.WriteLine("Retrying connection...");
             ReconnectMqtt();
         }
-               
+
+        public void mqttConnectedHandler(MqttClientConnectedEventArgs e)
+        {
+            Console.WriteLine($"####### BitmexFeed: Connected to MQTT server {e.AuthenticateResult.ResultCode} #########");
+        }
+
         internal void ReconnectMqtt(int timeout = 3000)
         {
             if (!mqttClient.IsConnected)

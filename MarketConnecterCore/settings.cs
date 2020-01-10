@@ -11,7 +11,7 @@ namespace MarketConnecterCore
         public const string IPADDR = "54.246.187.224";
         public const int PORT = 13000;
         public const string MQTT_USERNAME = "production";
-        public const string MQTT_PASSWORD = "B1tm3xPr0d";
+        public const string MQTT_PASSWORD = "productionpassword";
 
         #region Bitmex settings
         public const string BitmexWSS = "wss://www.bitmex.com/realtime";

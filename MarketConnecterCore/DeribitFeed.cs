@@ -51,7 +51,7 @@ namespace MarketConnectorCore
             }
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect to mqtt server on disconnect
-            mqttClient.ConnectAsync(this.mqttClientOptions);
+            mqttClient.ConnectAsync(this.mqttClientOptions).Wait();
 
             using (var socket = new WebSocket(domain))
             {
