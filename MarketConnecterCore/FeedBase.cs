@@ -18,6 +18,7 @@ namespace MarketConnecterCore
         internal IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         internal IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
+                                                          .WithCredentials(username: settings.MQTT_USERNAME, password: settings.MQTT_PASSWORD)
                                                           .Build();
         internal abstract EventHandler<MessageEventArgs> MessageReceivedHandler();
         internal abstract EventHandler OpenedHandler(WebSocket socket);

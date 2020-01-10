@@ -4085,30 +4085,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MWu\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "/Users/MWu/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
+      "projectUniqueName": "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj",
       "projectName": "MarketConnecterCore",
-      "projectPath": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
-      "packagesPath": "C:\\Users\\MWu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\obj\\",
+      "projectPath": "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj",
+      "packagesPath": "/Users/MWu/.nuget/packages/",
+      "outputPath": "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/obj/",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\MWu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/MWu/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4165,7 +4159,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
       }
     }
   },

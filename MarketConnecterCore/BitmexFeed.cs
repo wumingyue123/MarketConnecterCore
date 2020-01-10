@@ -28,6 +28,7 @@ namespace MarketConnectorCore
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
                                                           .WithCleanSession()
+                                                          .WithCredentials(username:settings.MQTT_USERNAME, password:settings.MQTT_PASSWORD)
                                                           .Build();
         IRestClient restClient = new RestClient(settings.BitmexRestURL);
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
