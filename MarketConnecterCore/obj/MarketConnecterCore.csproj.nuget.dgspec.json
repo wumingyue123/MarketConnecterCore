@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj": {}
+    "/home/ubuntu/efs/prod/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj": {}
   },
   "projects": {
-    "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj": {
+    "/home/ubuntu/efs/prod/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj",
+        "projectUniqueName": "/home/ubuntu/efs/prod/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj",
         "projectName": "MarketConnecterCore",
-        "projectPath": "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj",
-        "packagesPath": "/Users/MWu/.nuget/packages/",
-        "outputPath": "/Users/MWu/Projects/MarketConnecterCore/MarketConnecterCore/obj/",
+        "projectPath": "/home/ubuntu/efs/prod/MarketConnecterCore/MarketConnecterCore/MarketConnecterCore.csproj",
+        "packagesPath": "/home/ubuntu/.nuget/packages/",
+        "outputPath": "/home/ubuntu/efs/prod/MarketConnecterCore/MarketConnecterCore/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/MWu/.config/NuGet/NuGet.Config"
+          "/home/ubuntu/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
@@ -71,12 +71,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.0.0, 3.0.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.100/RuntimeIdentifierGraph.json"
         }
       }
     }

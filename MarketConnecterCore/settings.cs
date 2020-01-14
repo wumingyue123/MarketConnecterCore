@@ -17,6 +17,8 @@ namespace MarketConnecterCore
         public const string BitmexWSS = "wss://www.bitmex.com/realtime";
         public const string BitmexRestURL = "https://www.bitmex.com/api/v1/";
         public const string BitmexDataChannel = "marketdata/bitmexdata";
+        public const string BitmexDataTradesChannel = BitmexDataChannel+"/trades";
+        public const string BitmexDataQuotesChannel = BitmexDataChannel+"/quotes";
         public static List<string> bitmexCurrencyList = new List<string> { "XBTUSD", "ETHUSD" };
         public const string BITMEX_API_KEY = "8YFN7m1nciXgxJru9TCALc-A";
         public const string BITMEX_API_SECRET = "UBwm38Beoa_rXaNcnznJvoSVDfLKSS9S40YayqZOza_O0Q1Y";

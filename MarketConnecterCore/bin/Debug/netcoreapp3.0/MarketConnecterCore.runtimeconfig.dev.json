@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "/Users/MWu/.dotnet/store/|arch|/|tfm|",
-      "/Users/MWu/.nuget/packages"
+      "/home/ubuntu/.dotnet/store/|arch|/|tfm|",
+      "/home/ubuntu/.nuget/packages"
     ]
   }
 }

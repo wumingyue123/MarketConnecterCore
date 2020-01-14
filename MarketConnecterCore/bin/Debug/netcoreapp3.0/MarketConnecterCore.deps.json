@@ -654,7 +654,7 @@
         "runtime": {
           "lib/net35/websocket-sharp.dll": {
             "assemblyVersion": "1.0.2.32519",
-            "fileVersion": "1.0.2.32519"
+            "fileVersion": "0.0.0.0"
           }
         }
       }
