@@ -8,7 +8,7 @@ namespace MarketConnecterCore
     class settings
     {
         // mqtt server settings
-        public const string IPADDR = "54.246.187.224";
+        public const string IPADDR = "52.51.5.96";
         public const int PORT = 13000;
         public const string MQTT_USERNAME = "production";
         public const string MQTT_PASSWORD = "productionpassword";
