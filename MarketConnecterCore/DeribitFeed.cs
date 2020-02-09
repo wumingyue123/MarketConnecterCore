@@ -16,6 +16,7 @@ using MarketConnecterCore;
 using MQTTnet.Client.Disconnecting;
 using System.Collections.Concurrent;
 using WebSocketSharp.Net;
+using GlobalSettings;
 
 namespace MarketConnectorCore
 {
@@ -28,14 +29,14 @@ namespace MarketConnectorCore
             Tls12 = 3072
         }
 
-        public string domain = settings.DeribitWSS;
+        public string domain = BitmexSettings.DeribitWSS;
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                                                          .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
+                                                          .WithTcpServer(server: BitmexSettings.MqttIpAddr, port: BitmexSettings.MqttPort)
                                                           .WithCleanSession()
-                                                          .WithCredentials(username: settings.MQTT_USERNAME, password: settings.MQTT_PASSWORD)
+                                                          .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
                                                           .Build();
-        IRestClient restClient = new RestClient(settings.DeribitRESTURL);
+        IRestClient restClient = new RestClient(BitmexSettings.DeribitRESTURL);
         public static ConcurrentQueue<FeedMessage> DeribitFeedQueue = new ConcurrentQueue<FeedMessage>();
 
 
@@ -45,7 +46,7 @@ namespace MarketConnectorCore
 
             List<string> symbolList = new List<string>();
 
-            foreach (string _currency in settings.deribitCurrencyList)
+            foreach (string _currency in BitmexSettings.deribitCurrencyList)
             {
                 symbolList.AddRange(GetDeribitSymbols(_currency));
             }
@@ -130,7 +131,7 @@ namespace MarketConnectorCore
                     }
                     else if ((string)method == "subscription")// publish message
                     {
-                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: settings.DeribitDataChannel, message: data));
+                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.DeribitDataChannel, message: data));
 
                     }
                 }

@@ -17,21 +17,22 @@ using MQTTnet.Client.Connecting;
 using RestSharp;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
+using GlobalSettings;
 
 namespace MarketConnectorCore
 {
     public class BitmexFeed
     {
-        public string domain = settings.BitmexWSS;
-        private string _apiKey = settings.BITMEX_API_KEY; // "-U3zj2B-smGIzZC87Lh4hxlK"
-        private string _apiSecret = settings.BITMEX_API_SECRET; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
+        public string domain = BitmexSettings.BitmexWSS;
+        private string _apiKey = BitmexSettings.BITMEX_API_KEY; // "-U3zj2B-smGIzZC87Lh4hxlK"
+        private string _apiSecret = BitmexSettings.BITMEX_API_SECRET; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                                                          .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
+                                                          .WithTcpServer(server: BitmexSettings.MqttIpAddr, port: BitmexSettings.MqttPort)
                                                           .WithCleanSession()
-                                                          .WithCredentials(username:settings.MQTT_USERNAME, password:settings.MQTT_PASSWORD)
+                                                          .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
                                                           .Build();
-        IRestClient restClient = new RestClient(settings.BitmexRestURL);
+        IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL);
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
 
         public void Start()
@@ -44,7 +45,7 @@ namespace MarketConnectorCore
 
             mqttClient.ConnectAsync(this.mqttClientOptions).Wait();
 
-            settings.bitmexCurrencyList = GetBitmexSymbols();
+            BitmexSettings.bitmexCurrencyList = GetBitmexSymbols();
 
             using (var socket = new WebSocket(domain))
             {
@@ -136,7 +137,7 @@ namespace MarketConnectorCore
             {
                 Console.WriteLine("Connection open: {0}", domain);
                 Authenticate(socket);
-                foreach (string _symbol in settings.bitmexCurrencyList)
+                foreach (string _symbol in BitmexSettings.bitmexCurrencyList)
                 {
                     Console.WriteLine($"BITMEX: loaded contract------{_symbol}");
                     Subscribe(socket, $"trade:{_symbol}");
@@ -166,7 +167,7 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 string data = e.Message;
-                BitmexFeedQueue.Enqueue(new FeedMessage(topic: settings.BitmexDataChannel, message: data));
+                BitmexFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.BitmexDataChannel, message: data));
             };
         }
 

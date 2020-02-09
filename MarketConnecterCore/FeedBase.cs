@@ -9,6 +9,7 @@ using System.Security.Authentication;
 using System.Threading;
 using System.Threading.Tasks;
 using WebSocketSharp;
+using GlobalSettings;
 
 namespace MarketConnecterCore
 {
@@ -17,8 +18,8 @@ namespace MarketConnecterCore
         internal string domain;
         internal IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         internal IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                                                          .WithTcpServer(server: settings.IPADDR, port: settings.PORT)
-                                                          .WithCredentials(username: settings.MQTT_USERNAME, password: settings.MQTT_PASSWORD)
+                                                          .WithTcpServer(server: BitmexSettings.MqttIpAddr, port: BitmexSettings.MqttPort)
+                                                          .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
                                                           .Build();
         internal abstract EventHandler<MessageEventArgs> MessageReceivedHandler();
         internal abstract EventHandler OpenedHandler(WebSocket socket);
