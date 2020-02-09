@@ -40,7 +40,7 @@
           "ref/netstandard1.3/_._": {}
         }
       },
-      "MQTTnet/3.0.5": {
+      "MQTTnet/3.0.8": {
         "type": "package",
         "dependencies": {
           "NETStandard.Library": "2.0.0",
@@ -1226,10 +1226,10 @@
         "ref/xamarinwatchos10/_._"
       ]
     },
-    "MQTTnet/3.0.5": {
-      "sha512": "3VVU0xffpIjYAd2S+edxiVTyBxtGlz0fSeoJlZVrHv6qgR6f7Tt8ag2EYlUqsZXmuHQFmXx3IGMEOPaOEtHLSg==",
+    "MQTTnet/3.0.8": {
+      "sha512": "obMCW3VPxmb/Mpy/1Rvmt0l9p+EYcTUgC+HYN4B4/Dz8B93JhWEiy3VAvJfzTAb/onjwxbe53bD3bv2COVZyqA==",
       "type": "package",
-      "path": "mqttnet/3.0.5",
+      "path": "mqttnet/3.0.8",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1242,7 +1242,7 @@
         "lib/netstandard2.0/MQTTnet.dll",
         "lib/uap10.0/MQTTnet.dll",
         "lib/uap10.0/MQTTnet.pri",
-        "mqttnet.3.0.5.nupkg.sha512",
+        "mqttnet.3.0.8.nupkg.sha512",
         "mqttnet.nuspec"
       ]
     },
@@ -4077,7 +4077,7 @@
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.0": [
       "CommandLineParser >= 2.6.0",
-      "MQTTnet >= 3.0.5",
+      "MQTTnet >= 3.0.8",
       "Newtonsoft.Json >= 12.0.2",
       "RestSharp >= 106.6.10",
       "WebSocket4Net >= 0.15.2",
@@ -4085,23 +4085,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\MWu\\.nuget\\packages\\": {},
+    "C:\\Users\\wu_mi\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
+      "projectUniqueName": "C:\\Users\\wu_mi\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
       "projectName": "MarketConnecterCore",
-      "projectPath": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
-      "packagesPath": "C:\\Users\\MWu\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MWu\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\obj\\",
+      "projectPath": "C:\\Users\\wu_mi\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\MarketConnecterCore.csproj",
+      "packagesPath": "C:\\Users\\wu_mi\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\wu_mi\\source\\repos\\MarketConnecterCore\\MarketConnecterCore\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\MWu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\wu_mi\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4131,7 +4131,7 @@
           },
           "MQTTnet": {
             "target": "Package",
-            "version": "[3.0.5, )"
+            "version": "[3.0.8, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",
@@ -4160,12 +4160,9 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "frameworkReferences": {
-          "Microsoft.NETCore.App": {
-            "privateAssets": "all"
-          }
-        },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100-preview8-013656\\RuntimeIdentifierGraph.json"
+        "frameworkReferences": [
+          "Microsoft.NETCore.App"
+        ]
       }
     }
   },

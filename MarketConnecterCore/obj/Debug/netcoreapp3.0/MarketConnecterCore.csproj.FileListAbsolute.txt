@@ -11,7 +11,6 @@ C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\ne
 C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\WebSocket4Net.dll
 C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\websocket-sharp.dll
 C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csprojAssemblyReference.cache
-C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csproj.CoreCompileInputs.cache
 C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.AssemblyInfoInputs.cache
 C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.AssemblyInfo.cs
 C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csproj.CopyComplete
@@ -40,3 +39,9 @@ C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netc
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\FTXLibrary.pdb
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csprojAssemblyReference.cache
 C:\Users\MWu\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\CommandLine.dll
+C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\CommandLine.dll
+C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\FTXLibrary.dll
+C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\HuobiLibrary.dll
+C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\FTXLibrary.pdb
+C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\bin\Debug\netcoreapp3.0\HuobiLibrary.pdb
+C:\Users\wu_mi\source\repos\MarketConnecterCore\MarketConnecterCore\obj\Debug\netcoreapp3.0\MarketConnecterCore.csproj.CoreCompileInputs.cache

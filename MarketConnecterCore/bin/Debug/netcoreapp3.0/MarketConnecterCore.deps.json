@@ -9,7 +9,7 @@
       "MarketConnecterCore/1.0.0": {
         "dependencies": {
           "CommandLineParser": "2.6.0",
-          "MQTTnet": "3.0.5",
+          "MQTTnet": "3.0.8",
           "Newtonsoft.Json": "12.0.2",
           "RestSharp": "106.6.10",
           "WebSocket4Net": "0.15.2",
@@ -38,7 +38,7 @@
           "System.Runtime": "4.3.0"
         }
       },
-      "MQTTnet/3.0.5": {
+      "MQTTnet/3.0.8": {
         "dependencies": {
           "NETStandard.Library": "2.0.0",
           "System.Net.Security": "4.3.2",
@@ -47,8 +47,8 @@
         },
         "runtime": {
           "lib/netstandard2.0/MQTTnet.dll": {
-            "assemblyVersion": "3.0.5.0",
-            "fileVersion": "3.0.5.0"
+            "assemblyVersion": "3.0.8.0",
+            "fileVersion": "3.0.8.0"
           }
         }
       },
@@ -712,12 +712,12 @@
       "path": "microsoft.win32.primitives/4.3.0",
       "hashPath": "microsoft.win32.primitives.4.3.0.nupkg.sha512"
     },
-    "MQTTnet/3.0.5": {
+    "MQTTnet/3.0.8": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-3VVU0xffpIjYAd2S+edxiVTyBxtGlz0fSeoJlZVrHv6qgR6f7Tt8ag2EYlUqsZXmuHQFmXx3IGMEOPaOEtHLSg==",
-      "path": "mqttnet/3.0.5",
-      "hashPath": "mqttnet.3.0.5.nupkg.sha512"
+      "sha512": "sha512-obMCW3VPxmb/Mpy/1Rvmt0l9p+EYcTUgC+HYN4B4/Dz8B93JhWEiy3VAvJfzTAb/onjwxbe53bD3bv2COVZyqA==",
+      "path": "mqttnet/3.0.8",
+      "hashPath": "mqttnet.3.0.8.nupkg.sha512"
     },
     "NETStandard.Library/2.0.0": {
       "type": "package",

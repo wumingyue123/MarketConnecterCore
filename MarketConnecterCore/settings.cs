@@ -8,8 +8,8 @@ namespace MarketConnecterCore
     class settings
     {
         // mqtt server settings
-        public const string IPADDR = "192.168.1.182";
-        public const int PORT = 1883;
+        public static string IPADDR = "192.168.1.182";
+        public static int PORT = 1883;
 
         #region Bitmex settings
         public const string BitmexWSS = "wss://www.bitmex.com/realtime";
