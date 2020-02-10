@@ -131,7 +131,7 @@ namespace MarketConnectorCore
         #endregion
 
         #region Event Handlers
-        private EventHandler OpenedHandler(WebSocket socket)
+        protected virtual EventHandler OpenedHandler(WebSocket socket)
         {
             return (sender, e) =>
             {
@@ -146,7 +146,7 @@ namespace MarketConnectorCore
             };
         }
 
-        private EventHandler ClosedHandler(WebSocket socket)
+        protected virtual EventHandler ClosedHandler(WebSocket socket)
         {
             return (sender, e) =>
             {
@@ -157,12 +157,12 @@ namespace MarketConnectorCore
             };
         }
 
-        private static EventHandler<SuperSocket.ClientEngine.ErrorEventArgs> ErrorHandler()
+        protected virtual EventHandler<SuperSocket.ClientEngine.ErrorEventArgs> ErrorHandler()
         {
             return (sender, e) => Console.WriteLine(e.Exception);
         }
 
-        private EventHandler<MessageReceivedEventArgs> MessageReceivedHandler()
+        protected virtual EventHandler<MessageReceivedEventArgs> MessageReceivedHandler()
         {
             return (sender, e) =>
             {
@@ -174,7 +174,7 @@ namespace MarketConnectorCore
         #endregion
 
         #region functions
-        private void Authenticate(WebSocket socket)
+        protected void Authenticate(WebSocket socket)
         {
             Console.WriteLine("authenticating...");
             long _nonce = GetNonce();
@@ -192,7 +192,7 @@ namespace MarketConnectorCore
             socket.Send(JsonConvert.SerializeObject(toSend));
         }
 
-        private static void Subscribe(WebSocket socket, string channel)
+        protected static void Subscribe(WebSocket socket, string channel)
         {
             var toSend = new
             {
