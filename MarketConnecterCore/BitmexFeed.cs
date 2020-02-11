@@ -24,8 +24,8 @@ namespace MarketConnectorCore
     public class BitmexFeed
     {
         public string domain = BitmexSettings.BitmexWSS;
-        private string _apiKey = BitmexSettings.BITMEX_API_KEY; // "-U3zj2B-smGIzZC87Lh4hxlK"
-        private string _apiSecret = BitmexSettings.BITMEX_API_SECRET; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
+        private string _apiKey = BitmexSettings.BitmexProdKey; // "-U3zj2B-smGIzZC87Lh4hxlK"
+        private string _apiSecret = BitmexSettings.BitmexProdSecret; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: BitmexSettings.MqttIpAddr, port: BitmexSettings.MqttPort)
@@ -167,7 +167,7 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 string data = e.Message;
-                BitmexFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.BitmexDataChannel, message: data));
+                BitmexFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.BitmexTradeChannel, message: data));
             };
         }
 
