@@ -21,8 +21,8 @@ namespace MarketConnecterCore
                                                           .WithTcpServer(server: BitmexSettings.MqttIpAddr, port: BitmexSettings.MqttPort)
                                                           .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
                                                           .Build();
-        internal abstract EventHandler<MessageEventArgs> MessageReceivedHandler();
-        internal abstract EventHandler OpenedHandler(WebSocket socket);
+        protected abstract EventHandler<MessageEventArgs> MessageReceivedHandler();
+        protected abstract EventHandler OpenedHandler(WebSocket socket);
 
         #region FeedMessage class
         public class FeedMessage

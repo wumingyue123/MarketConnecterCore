@@ -12,9 +12,9 @@ namespace MarketConnecterCore
         {
 
             BitmexFeed bitmexFeed = new BitmexFeed();
-            //DeribitFeed deribitFeed = new DeribitFeed();
+            ThreadPool.QueueUserWorkItem(new WaitCallback(bitmexFeed.Start));
 
-            Task.Run(()=>bitmexFeed.Start());
+            //DeribitFeed deribitFeed = new DeribitFeed();
             //Task.Run(()=>deribitFeed.Start());
 
             Console.ReadLine();

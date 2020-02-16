@@ -11,7 +11,6 @@ using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using System.IO;
 using System.Net.Sockets;
-using MarketConnecterCore;
 using MQTTnet.Client.Disconnecting;
 using MQTTnet.Client.Connecting;
 using RestSharp;
@@ -35,7 +34,7 @@ namespace MarketConnectorCore
         IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL);
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
 
-        public void Start()
+        public void Start(object callback)
         {
             ThreadPool.QueueUserWorkItem(StartPublish);
 
@@ -142,7 +141,6 @@ namespace MarketConnectorCore
                     Console.WriteLine($"BITMEX: loaded contract------{_symbol}");
                     Subscribe(socket, $"trade:{_symbol}");
                 }
-
             };
         }
 
