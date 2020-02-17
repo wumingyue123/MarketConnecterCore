@@ -29,14 +29,14 @@ namespace MarketConnectorCore
             Tls12 = 3072
         }
 
-        public string domain = BitmexSettings.DeribitWSS;
+        public string domain = DeribitSettings.DeribitWSS;
         private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
-                                                          .WithTcpServer(server: BitmexSettings.MqttIpAddr, port: BitmexSettings.MqttPort)
+                                                          .WithTcpServer(server: ServerSettings.MqttHost, port: ServerSettings.MqttPort)
                                                           .WithCleanSession()
                                                           .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
                                                           .Build();
-        IRestClient restClient = new RestClient(BitmexSettings.DeribitRESTURL);
+        IRestClient restClient = new RestClient(DeribitSettings.DeribitRESTURL);
         public static ConcurrentQueue<FeedMessage> DeribitFeedQueue = new ConcurrentQueue<FeedMessage>();
 
 
@@ -46,7 +46,7 @@ namespace MarketConnectorCore
 
             List<string> symbolList = new List<string>();
 
-            foreach (string _currency in BitmexSettings.deribitCurrencyList)
+            foreach (string _currency in DeribitSettings.deribitCurrencyList)
             {
                 symbolList.AddRange(GetDeribitSymbols(_currency));
             }
@@ -131,7 +131,7 @@ namespace MarketConnectorCore
                     }
                     else if ((string)method == "subscription")// publish message
                     {
-                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.DeribitDataChannel, message: data));
+                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: DeribitSettings.DeribitDataChannel, message: data));
 
                     }
                 }

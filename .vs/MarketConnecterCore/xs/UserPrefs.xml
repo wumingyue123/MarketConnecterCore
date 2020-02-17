@@ -5,7 +5,7 @@
       <File FileName="MarketConnecterCore/settings.cs" Line="16" Column="32" />
       <File FileName="MarketConnecterCore/Program.cs" />
       <File FileName="MarketConnecterCore/FeedBase.cs" />
-      <File FileName="MarketConnecterCore/BitmexFeed.cs" Line="55" Column="1" />
+      <File FileName="MarketConnecterCore/BitmexFeed.cs" Line="50" Column="14" />
       <File FileName="MarketConnecterCore/DeribitFeed.cs" />
     </Files>
     <Pads>
