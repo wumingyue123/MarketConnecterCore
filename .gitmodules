@@ -1,0 +1,3 @@
+[submodule "MarketConnecterCore/settings"] 
+  path = MarketConnecterCore/settings
+  url = git:https://github.com/wumingyue123/settings.git

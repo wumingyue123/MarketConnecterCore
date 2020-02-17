@@ -80,3 +80,8 @@ C:/Users/wu_mi/source/repos/MarketConnecterCore/MarketConnecterCore/obj/Debug/ne
 C:/Users/wu_mi/source/repos/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.dll
 C:/Users/wu_mi/source/repos/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.pdb
 C:/Users/wu_mi/source/repos/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.csprojAssemblyReference.cache
+/home/ubuntu/prod/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.csprojAssemblyReference.cache
+/home/ubuntu/prod/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.AssemblyInfoInputs.cache
+/home/ubuntu/prod/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.AssemblyInfo.cs
+/home/ubuntu/prod/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.dll
+/home/ubuntu/prod/MarketConnecterCore/MarketConnecterCore/obj/Debug/netcoreapp3.0/MarketConnecterCore.pdb
