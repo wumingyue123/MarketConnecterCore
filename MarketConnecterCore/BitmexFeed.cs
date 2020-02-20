@@ -76,7 +76,6 @@ namespace MarketConnectorCore
                     publishMessage(_out.message, _out.topic);
                     stopWatch.Stop();
                     n += 1;
-                    Console.WriteLine(n);
                 };
                 if (n == 100)
                 {
