@@ -88,6 +88,7 @@ namespace MarketConnectorCore
                 {
                     Console.WriteLine($"100 messages max time: {times.Max()}");
                     Console.WriteLine($"100 message average time: {times.Average()}");
+                    times.Clear();
                 }
             }
         }
