@@ -17,6 +17,8 @@ using RestSharp;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using GlobalSettings;
+using System.Diagnostics;
+using System.Linq;
 
 namespace MarketConnectorCore
 {
@@ -33,6 +35,7 @@ namespace MarketConnectorCore
                                                           .Build();
         IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL);
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
+        private Stopwatch stopWatch = new Stopwatch();
 
         public void Start(object callback)
         {
@@ -63,19 +66,33 @@ namespace MarketConnectorCore
         #region MQTT publisher
         private void StartPublish(object callback)
         {
+            List<long> times = new List<long>();
+            int n = 0;
             while(true)
-            {
-                FeedMessage _out;
-                if (BitmexFeedQueue.TryDequeue(out _out))
+            { 
+                if (BitmexFeedQueue.TryDequeue(out FeedMessage _out))
                 {
+                    stopWatch.Start();
                     publishMessage(_out.message, _out.topic);
+                    stopWatch.Stop();
+                    n += 1;
                 };
-
+                if (n == 100)
+                {
+                    times.Add(stopWatch.ElapsedMilliseconds);
+                    stopWatch.Reset();
+                }
+                if(times.Count==10)
+                {
+                    Console.WriteLine($"100 messages max time: {times.Max()}");
+                    Console.WriteLine($"100 message average time: {times.Average()}");
+                }
             }
         }
 
         public void publishMessage(string message, string topic)
         {
+            // TODO: Make this async
             mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
                         .WithPayload(message)
