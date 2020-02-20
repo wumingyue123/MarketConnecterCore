@@ -76,11 +76,13 @@ namespace MarketConnectorCore
                     publishMessage(_out.message, _out.topic);
                     stopWatch.Stop();
                     n += 1;
+                    Console.WriteLine(n);
                 };
                 if (n == 100)
                 {
                     times.Add(stopWatch.ElapsedMilliseconds);
                     stopWatch.Reset();
+                    n = 0;
                 }
                 if(times.Count==10)
                 {
