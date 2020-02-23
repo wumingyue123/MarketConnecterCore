@@ -36,7 +36,6 @@ namespace MarketConnectorCore
                                                           .Build();
         IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL);
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
-        private Stopwatch stopWatch = new Stopwatch();
 
         protected static NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration();
         protected static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -74,29 +73,13 @@ namespace MarketConnectorCore
         #region MQTT publisher
         private void StartPublish(object callback)
         {
-            List<long> times = new List<long>();
-            int n = 0;
             while(true)
             { 
                 if (BitmexFeedQueue.TryDequeue(out FeedMessage _out))
                 {
-                    stopWatch.Start();
                     publishMessage(_out.message, _out.topic);
-                    stopWatch.Stop();
-                    n += 1;
+                    logger.Info(Stopwatch.GetTimestamp());
                 };
-                if (n == 100)
-                {
-                    times.Add(stopWatch.ElapsedMilliseconds);
-                    stopWatch.Reset();
-                    n = 0;
-                }
-                if(times.Count==10)
-                {
-                    Console.WriteLine($"100 messages max time: {times.Max()}");
-                    Console.WriteLine($"100 message average time: {times.Average()}");
-                    times.Clear();
-                }
             }
         }
 
