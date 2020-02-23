@@ -43,9 +43,8 @@ namespace MarketConnectorCore
 
         public void Start(object callback)
         {
-            config.AddRule(LogLevel.Info, LogLevel.Info, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" });
+            config.AddRule(LogLevel.Info, LogLevel.Debug, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" });
             NLog.LogManager.Configuration = config;
-            logger.Info("ticks per second: " + Stopwatch.Frequency);
 
             ThreadPool.QueueUserWorkItem(StartPublish);
 
