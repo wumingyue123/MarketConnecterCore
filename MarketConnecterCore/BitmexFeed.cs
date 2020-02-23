@@ -19,6 +19,7 @@ using System.Collections.Concurrent;
 using GlobalSettings;
 using System.Diagnostics;
 using System.Linq;
+using NLog;
 
 namespace MarketConnectorCore
 {
@@ -37,11 +38,15 @@ namespace MarketConnectorCore
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
         private Stopwatch stopWatch = new Stopwatch();
 
+        private static NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration();
         private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public void Start(object callback)
         {
-            Console.WriteLine("ticks per second: " + Stopwatch.Frequency);
+            config.AddRule(LogLevel.Info, LogLevel.Info, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" });
+            NLog.LogManager.Configuration = config;
+            logger.Info("ticks per second: " + Stopwatch.Frequency);
+
             ThreadPool.QueueUserWorkItem(StartPublish);
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
@@ -187,9 +192,9 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 string data = e.Message;
-                logger.Info(data);
+                logger.Info(data+",");
                 BitmexFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.BitmexTradeChannel, message: data));
-                logger.Info(Stopwatch.GetTimestamp());
+                logger.Info(Stopwatch.GetTimestamp()+"\n");
 
             };
         }
