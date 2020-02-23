@@ -46,7 +46,7 @@ namespace MarketConnectorCore
             config.AddRuleForOneLevel(LogLevel.Debug, new NLog.Targets.FileTarget("logfile") { FileName = "./info.txt" });
             NLog.LogManager.Configuration = config;
 
-            ThreadPool.QueueUserWorkItem(StartPublish);
+            ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
 
@@ -78,7 +78,6 @@ namespace MarketConnectorCore
                 if (BitmexFeedQueue.TryDequeue(out FeedMessage _out))
                 {
                     publishMessage(_out.message, _out.topic);
-                    logger.Info(Stopwatch.GetTimestamp());
                 };
             }
         }
