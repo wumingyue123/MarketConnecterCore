@@ -43,7 +43,8 @@ namespace MarketConnectorCore
 
         public void Start(object callback)
         {
-            config.AddRule(LogLevel.Info, LogLevel.Debug, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" });
+            config.AddRuleForOneLevel(LogLevel.Info, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" });
+            config.AddRuleForOneLevel(LogLevel.Debug, new NLog.Targets.FileTarget("logfile") { FileName = "./info.txt" });
             NLog.LogManager.Configuration = config;
 
             ThreadPool.QueueUserWorkItem(StartPublish);
