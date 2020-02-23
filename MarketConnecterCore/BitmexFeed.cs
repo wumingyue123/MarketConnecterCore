@@ -37,8 +37,11 @@ namespace MarketConnectorCore
         public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
         private Stopwatch stopWatch = new Stopwatch();
 
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         public void Start(object callback)
         {
+            Console.WriteLine("ticks per second: " + Stopwatch.Frequency);
             ThreadPool.QueueUserWorkItem(StartPublish);
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
@@ -184,7 +187,10 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 string data = e.Message;
+                logger.Info(data);
                 BitmexFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.BitmexTradeChannel, message: data));
+                logger.Info(Stopwatch.GetTimestamp());
+
             };
         }
 
