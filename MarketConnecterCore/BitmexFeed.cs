@@ -71,7 +71,7 @@ namespace MarketConnectorCore
         }
 
         #region MQTT publisher
-        private void StartPublish(object callback)
+        protected virtual void StartPublish(object callback)
         {
             while(true)
             { 
