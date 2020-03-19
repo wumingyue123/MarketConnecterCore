@@ -35,7 +35,7 @@ namespace MarketConnectorCore
                                                           .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
                                                           .Build();
         IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL);
-        public static ConcurrentQueue<FeedMessage> BitmexFeedQueue = new ConcurrentQueue<FeedMessage>();
+        public static BlockingCollection<FeedMessage> BitmexFeedQueue = new BlockingCollection<FeedMessage>();
 
         protected static NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration();
         protected static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -74,11 +74,11 @@ namespace MarketConnectorCore
         protected virtual void StartPublish(object callback)
         {
             while(true)
-            { 
-                if (BitmexFeedQueue.TryDequeue(out FeedMessage _out))
-                {
-                    publishMessage(_out.message, _out.topic);
-                };
+            {
+                FeedMessage message = BitmexFeedQueue.Take();
+                
+                publishMessage(message.message, message.topic);
+                
             }
         }
 
@@ -174,7 +174,7 @@ namespace MarketConnectorCore
             return (sender, e) =>
             {
                 string data = e.Message;
-                BitmexFeedQueue.Enqueue(new FeedMessage(topic: BitmexSettings.BitmexTradeChannel, message: data));
+                BitmexFeedQueue.Add(new FeedMessage(topic: BitmexSettings.BitmexTradeChannel, message: data));
             };
         }
 

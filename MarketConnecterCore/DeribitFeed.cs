@@ -37,7 +37,7 @@ namespace MarketConnectorCore
                                                           .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
                                                           .Build();
         IRestClient restClient = new RestClient(DeribitSettings.DeribitRESTURL);
-        public static ConcurrentQueue<FeedMessage> DeribitFeedQueue = new ConcurrentQueue<FeedMessage>();
+        public static BlockingCollection<FeedMessage> DeribitFeedQueue = new BlockingCollection<FeedMessage>();
 
 
         public void Start()
@@ -131,7 +131,7 @@ namespace MarketConnectorCore
                     }
                     else if ((string)method == "subscription")// publish message
                     {
-                        DeribitFeedQueue.Enqueue(new FeedMessage(topic: DeribitSettings.DeribitDataChannel, message: data));
+                        DeribitFeedQueue.Add(new FeedMessage(topic: DeribitSettings.DeribitDataChannel, message: data));
 
                     }
                 }
@@ -231,11 +231,10 @@ namespace MarketConnectorCore
         {
             while (true)
             {
-                FeedMessage _out;
-                if (DeribitFeedQueue.TryDequeue(out _out))
-                {
-                    publishMessage(message: _out.message, topic: _out.topic);
-                };
+                FeedMessage message = DeribitFeedQueue.Take();
+                    
+                publishMessage(message: message.message, topic: message.topic);
+                
 
             }
         }
