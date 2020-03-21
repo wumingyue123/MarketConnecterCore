@@ -157,10 +157,10 @@ namespace MarketConnectorCore
         {
             return (sender, e) =>
             {
-                ClosedEventArgs eventArgs = e as ClosedEventArgs;
                 Console.WriteLine($"Bitmex websocket closed with reason:");
-                Console.WriteLine(eventArgs.Reason);
+                Console.WriteLine(e.ToString());
                 Console.WriteLine($"socket closed at {domain}");
+                socket.Open();
             };
         }
 
