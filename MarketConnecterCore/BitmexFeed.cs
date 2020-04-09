@@ -17,8 +17,6 @@ using RestSharp;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using GlobalSettings;
-using System.Diagnostics;
-using System.Linq;
 using NLog;
 
 namespace MarketConnectorCore
@@ -26,31 +24,32 @@ namespace MarketConnectorCore
     public class BitmexFeed
     {
         public string domain = BitmexSettings.BitmexWSS;
+        private string exchange = "Bitmex"; // refactor
         private string _apiKey = BitmexSettings.BitmexProdKey; // "-U3zj2B-smGIzZC87Lh4hxlK"
         private string _apiSecret = BitmexSettings.BitmexProdSecret; // "ZDKlW9u8Q-Hr9o09YE13tDo2-dhp0d5_qcaQhRkdupsJemL0"
-        private IMqttClient mqttClient = new MqttFactory().CreateMqttClient();
+        private IMqttClient mqttClient = new MqttFactory().CreateMqttClient(); // refactor
         private IMqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
                                                           .WithTcpServer(server: BitmexSettings.MqttIpAddr, port: BitmexSettings.MqttPort)
                                                           .WithCleanSession()
                                                           .WithCredentials(username: BitmexSettings.MqttUserName, password: BitmexSettings.MqttPassword)
-                                                          .Build();
-        IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL);
-        public static BlockingCollection<FeedMessage> BitmexFeedQueue = new BlockingCollection<FeedMessage>();
+                                                          .Build(); // refactor
+        IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL); // refactor
+        public static BlockingCollection<FeedMessage> BitmexFeedQueue = new BlockingCollection<FeedMessage>(); // refactor
 
-        protected static NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration();
-        protected static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        protected static NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration(); // refactor
+        protected static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger(); // refactor
 
         public void Start(object callback)
         {
-            config.AddRuleForOneLevel(LogLevel.Info, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" });
-            config.AddRuleForOneLevel(LogLevel.Debug, new NLog.Targets.FileTarget("logfile") { FileName = "./info.txt" });
-            NLog.LogManager.Configuration = config;
+            config.AddRuleForOneLevel(LogLevel.Info, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" }); // refactor
+            config.AddRuleForOneLevel(LogLevel.Debug, new NLog.Targets.FileTarget("logfile") { FileName = "./info.txt" }); // refactor
+            NLog.LogManager.Configuration = config; // refactor
 
-            ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish));
+            ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish)); // refactor
 
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
 
-            mqttClient.UseConnectedHandler(mqttConnectedHandler);
+            mqttClient.UseConnectedHandler(mqttConnectedHandler); // refactor
 
             mqttClient.ConnectAsync(this.mqttClientOptions).Wait();
 
@@ -71,7 +70,7 @@ namespace MarketConnectorCore
         }
 
         #region MQTT publisher
-        protected virtual void StartPublish(object callback)
+        protected virtual void StartPublish(object callback) // refactor
         {
             while(true)
             {
@@ -82,7 +81,7 @@ namespace MarketConnectorCore
             }
         }
 
-        public void publishMessage(string message, string topic)
+        public void publishMessage(string message, string topic) // refactor
         {
             // TODO: Make this async
             mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
@@ -93,7 +92,7 @@ namespace MarketConnectorCore
                         .Build());
         }
 
-        public void publishMessage(Stream message, string topic)
+        public void publishMessage(Stream message, string topic) // refactor
         {
             mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
@@ -103,7 +102,7 @@ namespace MarketConnectorCore
                         .Build());
         }
 
-        public void publishMessage(byte[] message, string topic)
+        public void publishMessage(byte[] message, string topic) // refactor
         {
             mqttClient.PublishAsync(new MqttApplicationMessageBuilder()
                         .WithTopic(topic)
@@ -113,20 +112,20 @@ namespace MarketConnectorCore
                         .Build());
         }
 
-        public void mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)
+        public void mqttDisconnectedHandler(MqttClientDisconnectedEventArgs e)  // refactor
         {
-            Console.WriteLine($"####### BitmexFeed: MQTT server disconnected with reason {e.AuthenticateResult.ReasonString} {e.Exception.Message} #########");
+            Console.WriteLine($"####### {exchange}Feed: MQTT server disconnected with reason {e.AuthenticateResult.ReasonString} {e.Exception.Message} #########");
             Thread.Sleep((int)1e4);
             Console.WriteLine("Retrying connection...");
             ReconnectMqtt();
         }
 
-        public void mqttConnectedHandler(MqttClientConnectedEventArgs e)
+        public void mqttConnectedHandler(MqttClientConnectedEventArgs e) // refactor
         {
-            Console.WriteLine($"####### BitmexFeed: Connected to MQTT server {e.AuthenticateResult.ResultCode} #########");
+            Console.WriteLine($"####### {exchange}Feed: Connected to MQTT server {e.AuthenticateResult.ResultCode} #########");
         }
 
-        internal void ReconnectMqtt(int timeout = 3000)
+        internal void ReconnectMqtt(int timeout = 3000) // refactor
         {
             if (!mqttClient.IsConnected)
             {
@@ -139,7 +138,7 @@ namespace MarketConnectorCore
         #endregion
 
         #region Event Handlers
-        protected virtual EventHandler OpenedHandler(WebSocket socket)
+        protected virtual EventHandler OpenedHandler(WebSocket socket) // refactor
         {
             return (sender, e) =>
             {
@@ -147,17 +146,17 @@ namespace MarketConnectorCore
                 Authenticate(socket);
                 foreach (string _symbol in BitmexSettings.bitmexCurrencyList)
                 {
-                    Console.WriteLine($"BITMEX: loaded contract------{_symbol}");
+                    Console.WriteLine($"{exchange}: loaded contract------{_symbol}");
                     Subscribe(socket, $"trade:{_symbol}");
                 }
             };
         }
 
-        protected virtual EventHandler ClosedHandler(WebSocket socket)
+        protected virtual EventHandler ClosedHandler(WebSocket socket) // refactor
         {
             return (sender, e) =>
             {
-                Console.WriteLine($"Bitmex websocket closed with reason:");
+                Console.WriteLine($"{exchange} websocket closed with reason:");
                 Console.WriteLine(e.ToString());
                 Console.WriteLine($"socket closed at {domain}");
                 socket.Open();
