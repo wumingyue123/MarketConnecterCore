@@ -41,8 +41,9 @@ namespace MarketConnectorCore
 
         public void Start(object callback)
         {
-            config.AddRuleForOneLevel(LogLevel.Info, new NLog.Targets.FileTarget("logfile") { FileName="./info.txt" }); // refactor
             config.AddRuleForOneLevel(LogLevel.Debug, new NLog.Targets.FileTarget("logfile") { FileName = "./info.txt" }); // refactor
+            config.AddRuleForOneLevel(LogLevel.Error, new NLog.Targets.FileTarget("logfile") { FileName = "./info.txt" }); // refactor
+
             NLog.LogManager.Configuration = config; // refactor
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish)); // refactor
