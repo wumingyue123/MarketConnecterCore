@@ -17,7 +17,6 @@ using RestSharp;
 using Newtonsoft.Json.Linq;
 using System.Collections.Concurrent;
 using GlobalSettings;
-using NLog;
 
 namespace MarketConnectorCore
 {
@@ -44,7 +43,7 @@ namespace MarketConnectorCore
             mqttClient.UseDisconnectedHandler(mqttDisconnectedHandler); // reconnect mqtt server on disconnect
 
             mqttClient.UseConnectedHandler(mqttConnectedHandler); // refactor
-            Console.WriteLine(BitmexSettings.MqttIpAddr);
+            Console.WriteLine($"{BitmexSettings.MqttIpAddr}:{ServerSettings.MqttPort}");
             mqttClient.ConnectAsync(this.mqttClientOptions).Wait();
 
             BitmexSettings.bitmexCurrencyList = GetBitmexSymbols();

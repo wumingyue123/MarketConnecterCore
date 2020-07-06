@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "MarketConnecterCore": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker"
+    }
+  }
+}
