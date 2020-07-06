@@ -36,12 +36,8 @@ namespace MarketConnectorCore
         IRestClient restClient = new RestClient(BitmexSettings.BitmexRestURL); // refactor
         public static BlockingCollection<FeedMessage> BitmexFeedQueue = new BlockingCollection<FeedMessage>(); // refactor
 
-        protected static NLog.Config.LoggingConfiguration config = new NLog.Config.LoggingConfiguration(); // refactor
-        protected static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger(); // refactor
-
         public void Start(object callback)
         {
-            NLog.LogManager.Configuration = config; // refactor
 
             ThreadPool.QueueUserWorkItem(new WaitCallback(StartPublish)); // refactor
 
